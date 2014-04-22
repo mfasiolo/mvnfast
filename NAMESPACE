@@ -1,0 +1,7 @@
+useDynLib(synlik)
+exportPattern("^[[:alpha:]]+")
+
+# Imported stuff
+
+importFrom(Rcpp)
+
