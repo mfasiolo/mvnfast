@@ -22,8 +22,8 @@
 #' mcov <- tcrossprod(tmp, tmp)
 #' myChol <- chol(mcov)
 #' 
-#' head(dmvnFast(X, mu, mcov), 10)
-#' head(dmvnFast(X, mu, myChol, isChol = TRUE), 10)
+#' head(dmvn(X, mu, mcov), 10)
+#' head(dmvn(X, mu, myChol, isChol = TRUE), 10)
 #' 
 #' \dontrun{
 #' # Performance comparison
@@ -31,23 +31,21 @@
 #' library(microbenchmark)
 #' 
 #' a <- cbind(
-#'       dmvnFast(X, mu, mcov),
-#'       dmvnFast(X, mu, myChol, isChol = TRUE),
+#'       dmvn(X, mu, mcov),
+#'       dmvn(X, mu, myChol, isChol = TRUE),
 #'       dmvnorm(X, mu, mcov))
 #'       
 #' # Check if we get the same output as dmvnorm()
 #' a[ , 1] / a[, 3]
 #' a[ , 2] / a[, 3]
 #' 
-#' microbenchmark(dmvnFast(X, mu, 
-#'                          myChol, 
-#'                           isChol = TRUE), 
-#'                dmvnFast(X, mu, mcov), 
+#' microbenchmark(dmvn(X, mu, myChol, isChol = TRUE), 
+#'                dmvn(X, mu, mcov), 
 #'                dmvnorm(X, mu, mcov))
 #' }
-#' @export dmvnFast
+#' @export dmvn
 
-dmvnFast <- function(X, mu, sigma, log = FALSE, isChol = FALSE, verbose = TRUE){
+dmvn <- function(X, mu, sigma, log = FALSE, isChol = FALSE, verbose = TRUE){
   
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
   
@@ -70,6 +68,5 @@ dmvnFast <- function(X, mu, sigma, log = FALSE, isChol = FALSE, verbose = TRUE){
               sigma_ = sigma, 
               log_ = log, 
               isChol_ = isChol, 
-              PACKAGE = "synlik" ))
+              PACKAGE = "mvn" ))
 }
-

@@ -1,4 +1,4 @@
-useDynLib(synlik)
+useDynLib(mvn)
 exportPattern("^[[:alpha:]]+")
 
 # Imported stuff

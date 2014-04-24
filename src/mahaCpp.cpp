@@ -1,5 +1,6 @@
 #include "mvn.h"
 #include "internal.h"
+#include <omp.h>
 
 /*
   * Fast computation of Mahalanobis distance
@@ -31,10 +32,33 @@
     }
     
   }
+  
+/* 
+ *  Forward solve linear system
+*/
+arma::mat forwardSolve(arma::mat & A, arma::mat & X)
+{
+  using namespace arma;
+  
+  //omp_set_num_threads(2);
+  
+  int d = X.n_rows;
+  int n = X.n_cols;
+  mat out(d, n);
+  
+  //#pragma omp parallel for schedule(static)
+  for(int ii = 0; ii < n; ii++)
+  {
+    out(span::all, ii) = solve(trimatu(A), X(span::all, ii));
+  }
+  
+  return(out); 
+}
+
 
 
 /* 
-  *  Internal C++ function
+ *  Internal C++ function
 */
   
   arma::rowvec mahaInt(arma::mat & X,  
@@ -54,17 +78,19 @@
     // Calculate transposed cholesky dec. unless sigma is alread a cholesky dec.
     mat cholDec;
     if( isChol == false ) {
-      cholDec = trans( chol(sigma) );
+      cholDec = chol(sigma);
     }
     else{
       cholDec = trans(sigma);
     }
     
     // Solving n linear system, result are normalized residuals.
-    mat res = solve( trimatl( cholDec ), X.t() );
+    //X = X.t();
+    //mat res = forwardSolve( cholDec, X );
+    mat res = solve( trimatu( cholDec ), X.t() );
     
     // Residual sums of squares are the squared norm of each column of res. 
-    rowvec rss = sum(square(res), 0);
+    rowvec rss = sum(square(res), 0.0);
     
     return rss;
   }

@@ -50,7 +50,7 @@
     output <- .Call("checkBoundsCpp", 
                     theMean_ = theMean, cholFact_ = t(cholFact), indexes_ = indexes,            
                     upper_ = upper, lower_ = lower, output_ = output, 
-                    PACKAGE = "synlik")
+                    PACKAGE = "mvn")
   }
   
   # Resetting the parameters that are fixed.

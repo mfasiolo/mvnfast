@@ -19,8 +19,8 @@
 #' mcov <- tcrossprod(tmp, tmp)
 #' myChol <- chol(mcov)
 #' 
-#' rbind(head(mahaFast(X, mu, mcov), 10),
-#'       head(mahaFast(X, mu, myChol, isChol = TRUE), 10),
+#' rbind(head(maha(X, mu, mcov), 10),
+#'       head(maha(X, mu, myChol, isChol = TRUE), 10),
 #'       head(mahalanobis(X, mu, mcov), 10))
 #' 
 #' \dontrun{
@@ -28,30 +28,29 @@
 #' library(microbenchmark)
 #' 
 #' a <- cbind(
-#'   mahaFast(X, mu, mcov),
-#'   mahaFast(X, mu, myChol, isChol = TRUE),
+#'   maha(X, mu, mcov),
+#'   maha(X, mu, myChol, isChol = TRUE),
 #'   mahalanobis(X, mu, mcov))
 #'   
 #' # Same output as mahalanobis
 #' a[ , 1] / a[, 3]
 #' a[ , 2] / a[, 3]
 #' 
-#' microbenchmark(mahaFast(X, mu, mcov),
-#'                mahaFast(X, mu, myChol, isChol = TRUE),
+#' microbenchmark(maha(X, mu, mcov),
+#'                maha(X, mu, myChol, isChol = TRUE),
 #'                mahalanobis(X, mu, mcov))
 #' }
 #' @export 
 
-mahaFast <- function(X, mu, sigma, isChol = FALSE)
+maha <- function(X, mu, sigma, isChol = FALSE)
 {
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
-    
+  
   drop(.Call( "mahaCpp", 
               X_ = X, 
               mu_ = mu, 
               sigma_ = sigma, 
               isChol_ = isChol, 
-              PACKAGE = "synlik" )) 
+              PACKAGE = "mvn" )) 
 }
-
 

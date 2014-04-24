@@ -12,6 +12,7 @@ Imports:
     Rcpp (>= 0.10.4)
 Suggests: 
     knitr,
-    testthat
+    testthat,
+    mvtnorm
 LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr

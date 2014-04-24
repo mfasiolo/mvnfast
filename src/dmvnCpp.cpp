@@ -33,7 +33,7 @@
       
       // Calculate residual sum of squares
       rowvec out = - 0.5 * mahaInt(X, mu, cholDec, true);
-      
+        
       out = out - ( (d / 2.0) * std::log(2.0 * M_PI) + sum(arma::log(cholDec.diag())) );
       
       if (log == false) {
@@ -47,7 +47,7 @@
     } catch(...){
       ::Rf_error( "c++ exception (unknown reason)" );
     }
-  }
+}
 
 
 
@@ -57,7 +57,7 @@
   myNorm <- function(X, mean, varcov)
   {
     dec <- chol(varcov)
-    tmp <- forwardsolve(t(dec), t(X) - mean )  
+    tmp <- forwardsolve(dec, t(X) - mean )  
     rss <- colSums( tmp ^ 2 )
     
     return( exp( - sum(log(diag(dec))) - 0.5 * length(mean) * log(2 * pi) - 0.5 * rss )  )
