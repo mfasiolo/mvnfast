@@ -1,8 +1,8 @@
-\name{maha}
-\alias{maha}
+\name{rmvn}
+\alias{rmvn}
 \title{Fast computation of squared mahalanobis distance}
 \usage{
-maha(X, mu, sigma, ncores = 1, isChol = FALSE)
+rmvn(n, mu, sigma, ncores = 1, isChol = FALSE)
 }
 \arguments{
   \item{X}{matrix n by d where each row is a d dimensional
@@ -35,9 +35,7 @@ tmp <- matrix(rnorm(d^2), d, d)
 mcov <- tcrossprod(tmp, tmp)
 myChol <- chol(mcov)
 
-rbind(head(maha(X, mu, mcov), 10),
-      head(maha(X, mu, myChol, isChol = TRUE), 10),
-      head(mahalanobis(X, mu, mcov), 10))
+rmvn(10, 1:d, mcov)
 
 \dontrun{
 # Performance comparison

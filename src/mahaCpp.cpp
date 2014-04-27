@@ -1,6 +1,5 @@
 #include "mvn.h"
 #include "internal.h"
-#include <omp.h>
 
 /*
  * Fast computation of Mahalanobis distance

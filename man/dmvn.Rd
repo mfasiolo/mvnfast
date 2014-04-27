@@ -2,7 +2,8 @@
 \alias{dmvn}
 \title{Fast computation of the multivariate normal density.}
 \usage{
-dmvn(X, mu, sigma, log = FALSE, isChol = FALSE, verbose = TRUE)
+dmvn(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE,
+  verbose = TRUE)
 }
 \arguments{
   \item{X}{matrix n by d where each row is a d dimensional

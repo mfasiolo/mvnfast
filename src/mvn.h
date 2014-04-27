@@ -2,6 +2,7 @@
 #define _MVN_H
 
 #include <RcppArmadillo.h>
+#include <omp.h>
 
 /*
  * note : RcppExport is an alias to `extern "C"` defined by Rcpp.
@@ -20,5 +21,7 @@ RcppExport SEXP checkBoundsCpp(SEXP theMean_, SEXP cholFact_, SEXP toCheck_, SEX
 RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol);
 
 RcppExport SEXP dmvnCpp(SEXP X_, SEXP mu_, SEXP sigma_, SEXP log_, SEXP ncores_, SEXP isChol_);
+
+RcppExport SEXP rmvnCpp(SEXP n_, SEXP mu_, SEXP sigma_, SEXP ncores_, SEXP isChol_);
 
 #endif
