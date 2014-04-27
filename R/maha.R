@@ -42,15 +42,16 @@
 #' }
 #' @export 
 
-maha <- function(X, mu, sigma, isChol = FALSE)
+maha <- function(X, mu, sigma, ncores = 1, isChol = FALSE)
 {
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
   
-  drop(.Call( "mahaCpp", 
-              X_ = X, 
-              mu_ = mu, 
-              sigma_ = sigma, 
-              isChol_ = isChol, 
-              PACKAGE = "mvn" )) 
+  .Call( "mahaCpp", 
+         X_ = X, 
+         mu_ = mu, 
+         sigma_ = sigma, 
+         ncores_ = ncores,
+         isChol_ = isChol, 
+         PACKAGE = "mvn" )
 }
 

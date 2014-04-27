@@ -9,6 +9,7 @@
                SEXP mu_,  
                SEXP sigma_, 
                SEXP log_,
+               SEXP ncores_,
                SEXP isChol_) 
 { 
     using namespace arma;
@@ -18,6 +19,7 @@
       vec mu = Rcpp::as<vec>(mu_);  
       mat sigma = Rcpp::as<mat>(sigma_); 
       bool log = Rcpp::as<bool>(log_); 
+      int  ncores = Rcpp::as<int>(ncores_); 
       bool isChol = Rcpp::as<bool>(isChol_); 
       
       int d = X.n_cols;
@@ -32,7 +34,7 @@
       }
       
       // Calculate residual sum of squares
-      rowvec out = - 0.5 * mahaInt(X, mu, cholDec, true);
+      vec out = - 0.5 * mahaInt(X, mu, cholDec, ncores, true);
         
       out = out - ( (d / 2.0) * std::log(2.0 * M_PI) + sum(arma::log(cholDec.diag())) );
       
@@ -40,7 +42,11 @@
         out = exp(out);
       }
       
-      return Rcpp::wrap(out);
+      // Dropping the dimensionality of the output vector
+      Rcpp::NumericVector Rout = Rcpp::wrap(out);
+      Rout.attr( "dim" ) = R_NilValue;
+      
+      return Rout;
       
     } catch( std::exception& __ex__){
       forward_exception_to_r(__ex__);

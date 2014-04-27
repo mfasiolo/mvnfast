@@ -45,28 +45,29 @@
 #' }
 #' @export dmvn
 
-dmvn <- function(X, mu, sigma, log = FALSE, isChol = FALSE, verbose = TRUE){
+dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE, verbose = TRUE){
   
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
   
-  # Checking if there are zeros on the diagonal
-  fix <- which( diag(sigma) == 0 )
-  anyFix <- ( length(fix) > 0 )
+  #   # Checking if there are zeros on the diagonal
+  #   fix <- which( diag(sigma) == 0 )
+  #   anyFix <- ( length(fix) > 0 )
+  #   
+  #   if( anyFix )
+  #   {
+  #     if( isChol ) stop("The cholesky decomposition has zeros on the diagonal!")
+  #     if( verbose ) warning("The covariance has zeros on the diagonal, those variables are not taken into account.")
+  #     X <- X[ , -fix]
+  #     mu <- mu[ -fix ]
+  #     sigma <- sigma[-fix, -fix]
+  #   }
   
-  if( anyFix )
-  {
-    if( isChol ) stop("The cholesky decomposition has zeros on the diagonal!")
-    if( verbose ) warning("The covariance has zeros on the diagonal, those variables are not taken into account.")
-    X <- X[ , -fix]
-    mu <- mu[ -fix ]
-    sigma <- sigma[-fix, -fix]
-  }
-  
-  drop(.Call( "dmvnCpp", 
-              X_ = X, 
-              mu_ = mu, 
-              sigma_ = sigma, 
-              log_ = log, 
-              isChol_ = isChol, 
-              PACKAGE = "mvn" ))
+  .Call( "dmvnCpp", 
+         X_ = X, 
+         mu_ = mu, 
+         sigma_ = sigma, 
+         log_ = log, 
+         ncores_ = ncores,
+         isChol_ = isChol, 
+         PACKAGE = "mvn" )
 }
