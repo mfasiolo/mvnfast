@@ -1,4 +1,4 @@
-useDynLib(mvn)
+useDynLib(mvnfast)
 exportPattern("^[[:alpha:]]+")
 
 # Imported stuff

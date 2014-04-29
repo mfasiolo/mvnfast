@@ -1,4 +1,4 @@
-#include "mvn.h"
+#include "mvnfast.h"
 #include "internal.h"
 
 /*
@@ -33,19 +33,29 @@ SEXP rmvnCpp(SEXP n_,
       else{
         cholDec = sigma;
       }
-            
+                  
       // Generate standard normals using R rng, put it into the tmp matrix, which is then
       // converted to a arma::mat, without copying.
       NumericMatrix out(n, d);
       arma::mat tmp( out.begin(), out.nrow(), out.ncol(), false );
-      for(int kk = 0; kk < d; kk++) out( _, kk) = rnorm(n);
+      
+      NumericVector seeds = runif(4, 1.0, 1.844674e+19);
       
       #pragma omp parallel num_threads(ncores) if(ncores > 1)
       {
+      
       double acc;
       int irow, icol, ii;
       arma::rowvec work(d);
       
+      std::mt19937_64 engine( static_cast<uint64_t>(seeds[omp_get_thread_num()]) );
+      std::normal_distribution<> normal(0.0, 1.0);
+      
+      #pragma omp for schedule(static)
+      for (int irow = 0; irow < n; irow++) 
+        for (int icol = 0; icol < d; icol++) 
+           out(irow, icol) = normal(engine);
+        
       #pragma omp for schedule(static)
       for(irow = 0; irow < n; irow++)
       {

@@ -1,9 +1,9 @@
-Package: mvn
+Package: mvnfast
 Type: Package
 Title: Fast multivariate normal methods.
 Version: 0.1.0
-Date: 2013-09-10
-Author: Matteo Fasiolo and Simon Wood
+Date: 2014-05-01
+Author: Matteo Fasiolo
 Maintainer: Matteo Fasiolo <matteo.fasiolo@gmail.com>
 Description: Fast multivariate normal methods.
 License: GPL (>=2)
@@ -13,6 +13,8 @@ Imports:
 Suggests: 
     knitr,
     testthat,
-    mvtnorm
+    mvtnorm,
+    microbenchmark,
+    MASS
 LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr

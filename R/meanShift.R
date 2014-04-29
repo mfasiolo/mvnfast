@@ -19,6 +19,7 @@
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com>.
 #' @examples
 #' # 2 dimensional example
+#' \dontrun{
 #' set.seed(434)
 #' X <- matrix(rnorm(400), 100, 2) * c(1, 2)
 #' out <- meanShift(X, init = c(2, 2), H = diag(0.2, 2), traj = TRUE)
@@ -26,6 +27,7 @@
 #' lines(out$allTraj[ , 1], out$allTraj[ , 2], col = 2, lwd = 2)
 #' points(0, 0, col = 3, pch = 3, lwd = 3) # true mode
 #' points(out$estim[1], out$estim[2], col = 4, pch = 3, lwd = 3) # final estimate
+#' }
 #' @export
 #'
 
