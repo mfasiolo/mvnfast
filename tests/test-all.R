@@ -1,4 +1,4 @@
 library(testthat)
-library(mvn)
+library(mvnfast)
 
-test_package("mvn")
+test_package("mvnfast")

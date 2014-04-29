@@ -2,8 +2,11 @@
 #define _MVNFAST_H
 
 #include <RcppArmadillo.h>
-#include <omp.h>
 #include <random>
+
+#ifdef SUPPORT_OPENMP
+#include <omp.h>
+#endif
 
 /*
   * note : RcppExport is an alias to `extern "C"` defined by Rcpp.

@@ -2,7 +2,8 @@
 #include "internal.h"
 
 /*
-  Fast computation of pdf of a multivariate normal distribution
+ * Fast computation of pdf of a multivariate normal distribution
+ *
 */
 
 SEXP rmvnCpp(SEXP n_,  
@@ -25,38 +26,54 @@ SEXP rmvnCpp(SEXP n_,
       
       int d = mu.n_elem;
     
-      // Calculate cholesky dec. unless sigma is alread a cholesky dec.
+      // Calculate cholesky dec unless sigma is alread a cholesky dec.
       arma::mat cholDec;
       if( isChol == false ) {
-        cholDec = arma::chol(sigma);
+        cholDec = trimatu( arma::chol(sigma) );
       }
       else{
-        cholDec = sigma;
+        cholDec = trimatu( sigma );
       }
                   
-      // Generate standard normals using R rng, put it into the tmp matrix, which is then
-      // converted to a arma::mat, without copying.
+      // This is the matrix that will be filled with standard normal, we wrap into a arma::mat
       NumericMatrix out(n, d);
       arma::mat tmp( out.begin(), out.nrow(), out.ncol(), false );
       
-      NumericVector seeds = runif(4, 1.0, 1.844674e+19);
+      // What I to seed the C++11 rng is tricky. I produce "ncores" uniform numbers between 1 and the largest uint64_t,
+      // which are the seeds. I put the first one in "coreSeed". If there is no support for OpenMP only this seed
+      // will be used, as the computations will be sequential. If there is support for OpenMP "coreSeed" will
+      // be over-written, so that each core will get its own seed.
       
+      NumericVector seeds = runif(ncores, 1.0, std::numeric_limits<uint64_t>::max());
+      
+      #ifdef SUPPORT_OPENMP
       #pragma omp parallel num_threads(ncores) if(ncores > 1)
       {
+      #endif
       
       double acc;
       int irow, icol, ii;
       arma::rowvec work(d);
       
-      std::mt19937_64 engine( static_cast<uint64_t>(seeds[omp_get_thread_num()]) );
+      uint64_t coreSeed = static_cast<uint64_t>(seeds[0]);
+      
+      #ifdef SUPPORT_OPENMP
+      coreSeed = static_cast<uint64_t>( seeds[omp_get_thread_num()] );
+      #endif
+      
+      std::mt19937_64 engine( coreSeed );
       std::normal_distribution<> normal(0.0, 1.0);
       
+      #ifdef SUPPORT_OPENMP
       #pragma omp for schedule(static)
-      for (int irow = 0; irow < n; irow++) 
-        for (int icol = 0; icol < d; icol++) 
+      #endif
+      for (irow = 0; irow < n; irow++) 
+        for (icol = 0; icol < d; icol++) 
            out(irow, icol) = normal(engine);
-        
+      
+      #ifdef SUPPORT_OPENMP
       #pragma omp for schedule(static)
+      #endif
       for(irow = 0; irow < n; irow++)
       {
        
@@ -72,7 +89,10 @@ SEXP rmvnCpp(SEXP n_,
        
        tmp(arma::span(irow), arma::span::all) = work + mu;       
       }
+      
+      #ifdef SUPPORT_OPENMP
       }
+      #endif
       
       return out;
             

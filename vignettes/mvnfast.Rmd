@@ -4,7 +4,7 @@
 %\VignetteIndexEntry{synlik_vignette}
 -->
   
-  An Introduction to **mvn**
+  An Introduction to **mvnfast**
   =======================================
   
 ```{r setup, include=FALSE}
@@ -16,7 +16,7 @@ opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="cente
 Introduction
 ------------
   
-  The `mvn` R package provides computationally efficient tools related to the multivariate normal distribution. 
+The `mvn` R package provides computationally efficient tools related to the multivariate normal distribution. 
 The tools are generally faster than those provided by other packages, thanks to the use of C++ code through the 
 `Rcpp` package and of parallel computation through the `OpenMP` API.
 
@@ -34,7 +34,7 @@ library("mvn")
 library("MASS")
 
 # Generating 
-N <- 1000
+N <- 10000
 d <- 50
 mu <- 1:d
 tmp <- matrix(rnorm(d^2), d, d)

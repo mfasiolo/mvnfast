@@ -31,7 +31,7 @@
 #' @export
 #'
 
-meanShift <- function(X, init, H, tol = 1e-6, traj = FALSE)
+ms <- function(X, init, H, tol = 1e-6, traj = FALSE)
 {
   if(is.matrix(X) == FALSE) X <- matrix(X, length(X), 1)
   if( !is.matrix(H) ) H <- diag(H, ncol(X))

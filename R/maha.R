@@ -52,6 +52,6 @@ maha <- function(X, mu, sigma, ncores = 1, isChol = FALSE)
          sigma_ = sigma, 
          ncores_ = ncores,
          isChol_ = isChol, 
-         PACKAGE = "mvn" )
+         PACKAGE = "mvnfast" )
 }
 

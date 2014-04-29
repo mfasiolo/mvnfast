@@ -69,5 +69,5 @@ dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE, verbose 
          log_ = log, 
          ncores_ = ncores,
          isChol_ = isChol, 
-         PACKAGE = "mvn" )
+         PACKAGE = "mvnfast" )
 }
