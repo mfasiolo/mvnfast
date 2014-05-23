@@ -11,50 +11,62 @@
 #' @param H Positive definite bandwidth matrix representing the covariance of each component of the Gaussian kernel density.
 #' @param tol Tolerance used to assess the convergence of the algorithm, which is stopped if the absolute values
 #'            of increments along all the dimensions are smaller then tol at any iteration. Default value is 1e-6.
-#' @param traj If \code{FALSE} only the latest iteration is returned, if \code{TRUE} the function will return a matrix where
+#' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
+#' @param store If \code{FALSE} only the latest iteration is returned, if \code{TRUE} the function will return a matrix where
 #'             the i-th row is the position of the algorithms at the i-th iteration.
-#' @return A list where \code{estim} is a d-dimensional vector containing the last position of the algorithm, while \code{allTraj} 
-#'         is a matrix with d-colums representing the trajectory of the algorithm along each dimension. If \code{traj == FALSE} the whole trajectory
-#'         is not stored and \code{allTraj = NULL}.
+#' @return A list where \code{estim} is a d-dimensional vector containing the last position of the algorithm, while \code{traj} 
+#'         is a matrix with d-colums representing the trajectory of the algorithm along each dimension. If \code{store == FALSE} the whole trajectory
+#'         is not stored and \code{traj = NULL}.
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com>.
 #' @examples
-#' # 2 dimensional example
-#' \dontrun{
 #' set.seed(434)
-#' X <- matrix(rnorm(400), 100, 2) * c(1, 2)
-#' out <- meanShift(X, init = c(2, 2), H = diag(0.2, 2), traj = TRUE)
-#' plot(X, xlab = "X1", ylab = "X2")
-#' lines(out$allTraj[ , 1], out$allTraj[ , 2], col = 2, lwd = 2)
-#' points(0, 0, col = 3, pch = 3, lwd = 3) # true mode
-#' points(out$estim[1], out$estim[2], col = 4, pch = 3, lwd = 3) # final estimate
+#' 
+#' # Simulating multivariate normal data
+#' N <- 1000
+#' mu <- c(1, 2)
+#' sigma <- matrix(c(1, 0.5, 0.5, 1), 2, 2)
+#' X <- rmvn(N, mu = mu, sigma = sigma)
+#' 
+#' # Plotting the true density function
+#' steps <- 100
+#' range1 <- seq(min(X[ , 1]), max(X[ , 1]), length.out = steps)
+#' range2 <- seq(min(X[ , 2]), max(X[ , 2]), length.out = steps)
+#' grid <- expand.grid(range1, range2)
+#' vals <- dmvn(as.matrix(grid), mu, sigma)
+#' 
+#' contour(z = matrix(vals, steps, steps),  x = range1, y = range2, xlab = "X1", ylab = "X2")
+#' points(X[ , 1], X[ , 2], pch = '.')
+#'  
+#' # Estimating the mode from "nrep" starting points
+#' nrep <- 10
+#' index <- sample(1:N, nrep)
+#' for(ii in 1:nrep) {
+#'   start <- X[index[ii], ]
+#'   out <- ms(X, init = start, H = 0.1 * sigma, store = TRUE)
+#'   lines(out$traj[ , 1], out$traj[ , 2], col = 2, lwd = 2) 
+#'   points(out$final[1], out$final[2], col = 4, pch = 3, lwd = 3) # Estimated mode (blue)
+#'   points(start[1], start[2], col = 2, pch = 3, lwd = 3)         # ii-th starting value 
 #' }
 #' @export
-#'
 
-ms <- function(X, init, H, tol = 1e-6, traj = FALSE)
+ms <- function(X, init, H, tol = 1e-6, ncores = 1, store = FALSE)
 {
-  if(is.matrix(X) == FALSE) X <- matrix(X, length(X), 1)
+  if( is.matrix(X) == FALSE ) X <- matrix(X, length(X), 1)
+  
   if( !is.matrix(H) ) H <- diag(H, ncol(X))
+
+  if( !store ) trajectory <- NULL
   
-  d <- length(init)
-  N <- nrow(X)
-  oldPos <- currPos <- trajectory <- init
-  delta <- rep(2, d) * tol
+  cholDec <- chol( H )
   
-  weights <- numeric(N)
-  cholDec <- chol(H)
+  tmp <- .Call( "msCpp", 
+                init_ = init,
+                X_ = X, 
+                cholDec_ = cholDec, 
+                ncores_ = ncores,
+                tol_ = tol, 
+                store_ = store,
+                PACKAGE = "mvnfast" )
   
-  if( !traj ) trajectory <- NULL
-  
-  while( any( delta > tol ) )
-  {
-    oldPos <- currPos
-    weights <- dmvnFast(X = X, mu = oldPos, sigma = cholDec, isChol = TRUE)
-    currPos <- weights %*% X / sum(weights) 
-    delta <- abs(currPos - oldPos)
-    
-    if(traj) trajectory <- rbind(trajectory, currPos)
-  }
-  
-  list("estim" = drop(currPos), "allTraj" = trajectory)
+  list("final" = drop(tmp$final), "traj" = do.call("rbind", tmp$traj))
 }

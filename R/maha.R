@@ -1,13 +1,14 @@
 ######
 ## Fast computation of mahalanobis distance
 ######
-#' Fast computation of squared mahalanobis distance
+#' Fast computation of squared mahalanobis distance between all rows of \code{X} and the vector \code{mu} with respect to sigma.
 #'
 #' @param X matrix n by d where each row is a d dimensional random vector. Alternatively \code{X} can be a d-dimensional vector.
 #' @param mu vector of length d, representing the central position.
 #' @param sigma covariance matrix (d x d). Alternatively is can be the cholesky decomposition
 #'              of the covariance. In that case \code{isChol} should be set to \code{TRUE}.
-#' @param isChol boolean set to \code{TRUE} is sigma is the cholesky decomposition of the covariance.
+#' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
+#' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
 #' @return a vector of length n where the i-the entry contains the square mahalanobis distance i-th random vector.
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com>
 #' @examples
@@ -45,6 +46,8 @@
 maha <- function(X, mu, sigma, ncores = 1, isChol = FALSE)
 {
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
+  
+  if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
   
   .Call( "mahaCpp", 
          X_ = X, 

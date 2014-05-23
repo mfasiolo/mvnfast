@@ -1,6 +1,6 @@
 \name{maha}
 \alias{maha}
-\title{Fast computation of squared mahalanobis distance}
+\title{Fast computation of squared mahalanobis distance between all rows of \code{X} and the vector \code{mu} with respect to sigma.}
 \usage{
 maha(X, mu, sigma, ncores = 1, isChol = FALSE)
 }
@@ -16,15 +16,20 @@ maha(X, mu, sigma, ncores = 1, isChol = FALSE)
   can be the cholesky decomposition of the covariance. In
   that case \code{isChol} should be set to \code{TRUE}.}
 
-  \item{isChol}{boolean set to \code{TRUE} is sigma is the
-  cholesky decomposition of the covariance.}
+  \item{ncores}{Number of cores used. The parallelization
+  will take place only if OpenMP is supported.}
+
+  \item{isChol}{boolean set to true is \code{sigma} is the
+  cholesky decomposition of the covariance matrix.}
 }
 \value{
 a vector of length n where the i-the entry contains the
 square mahalanobis distance i-th random vector.
 }
 \description{
-Fast computation of squared mahalanobis distance
+Fast computation of squared mahalanobis distance between
+all rows of \code{X} and the vector \code{mu} with respect
+to sigma.
 }
 \examples{
 N <- 100

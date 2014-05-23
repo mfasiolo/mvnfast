@@ -1,3 +1,4 @@
+context("dmvn() and maha()")
 
 test_that("Checking dmvn() and maha() against dmvnorm() and mahalanobis", {
   library("mvtnorm")

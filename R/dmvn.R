@@ -7,10 +7,9 @@
 #' @param mu vector of length d, representing the mean the distribution.
 #' @param sigma covariance matrix (d x d). Alternatively is can be the cholesky decomposition
 #'              of the covariance. In that case isChol should be set to TRUE.
-#' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition
-#'               of the covariance matrix.
 #' @param log boolean set to true the logarithm of the pdf is required.
-#' @param verbose if TRUE (which is the default) the function will complain if \code{sigma} has zeros on the main diagonal. 
+#' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
+#' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
 #' @return a vector of length n where the i-the entry contains the pdf of the i-th random vector.
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com> 
 #' @examples
@@ -45,23 +44,12 @@
 #' }
 #' @export dmvn
 
-dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE, verbose = TRUE){
+dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE){
   
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
   
-  #   # Checking if there are zeros on the diagonal
-  #   fix <- which( diag(sigma) == 0 )
-  #   anyFix <- ( length(fix) > 0 )
-  #   
-  #   if( anyFix )
-  #   {
-  #     if( isChol ) stop("The cholesky decomposition has zeros on the diagonal!")
-  #     if( verbose ) warning("The covariance has zeros on the diagonal, those variables are not taken into account.")
-  #     X <- X[ , -fix]
-  #     mu <- mu[ -fix ]
-  #     sigma <- sigma[-fix, -fix]
-  #   }
-  
+  if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
+    
   .Call( "dmvnCpp", 
          X_ = X, 
          mu_ = mu, 

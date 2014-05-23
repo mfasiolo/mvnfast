@@ -2,48 +2,42 @@
 #include "internal.h"
 
 /*
-  Fast computation of pdf of a multivariate normal distribution
-*/
-  
-  SEXP dmvnCpp(SEXP X_,  
-               SEXP mu_,  
-               SEXP sigma_, 
-               SEXP log_,
-               SEXP ncores_,
-               SEXP isChol_) 
+ * Fast computation of pdf of a multivariate normal distribution
+ *
+ * See ?dmvn() for a description of the arguments and output.
+ */
+ 
+/*
+ * Interface to R
+ */
+SEXP dmvnCpp(SEXP X_,  
+             SEXP mu_,  
+             SEXP sigma_, 
+             SEXP log_,
+             SEXP ncores_,
+             SEXP isChol_) 
 { 
-    using namespace arma;
+    using namespace Rcpp;
     
     try{
-      mat X = Rcpp::as<mat>(X_);
-      vec mu = Rcpp::as<vec>(mu_);  
-      mat sigma = Rcpp::as<mat>(sigma_); 
-      bool log = Rcpp::as<bool>(log_); 
-      int  ncores = Rcpp::as<int>(ncores_); 
-      bool isChol = Rcpp::as<bool>(isChol_); 
-      
-      int d = X.n_cols;
+      arma::mat X = as<arma::mat>(X_);
+      arma::vec mu = as<arma::vec>(mu_);  
+      arma::mat sigma = as<arma::mat>(sigma_); 
+      bool log = as<bool>(log_); 
+      int  ncores = as<int>(ncores_); 
+      bool isChol = as<bool>(isChol_);
       
       // Calculate cholesky dec. unless sigma is alread a cholesky dec.
-      mat cholDec;
-      if( isChol == false ) {
-        cholDec = chol(sigma);
-      }
-      else{
+     arma::mat cholDec;
+     if( isChol == false ) {
+        cholDec = arma::chol(sigma);
+     }
+     else{
         cholDec = sigma;
-      }
-      
-      // Calculate residual sum of squares
-      vec out = - 0.5 * mahaInt(X, mu, cholDec, ncores, true);
-        
-      out = out - ( (d / 2.0) * std::log(2.0 * M_PI) + sum(arma::log(cholDec.diag())) );
-      
-      if (log == false) {
-        out = exp(out);
-      }
+     }
       
       // Dropping the dimensionality of the output vector
-      Rcpp::NumericVector Rout = Rcpp::wrap(out);
+      Rcpp::NumericVector Rout = Rcpp::wrap( dmvnInt( X, mu, cholDec, log, ncores) );
       Rout.attr( "dim" ) = R_NilValue;
       
       return Rout;
@@ -55,6 +49,24 @@
     }
 }
 
+
+/* 
+ *  Internal C++ function
+*/
+arma::vec dmvnInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, int ncores)
+{
+ using namespace arma;
+  
+ int d = X.n_cols;
+      
+ vec out = - 0.5 * mahaInt(X, mu, cholDec, ncores, true);
+        
+ out = out - ( (d / 2.0) * std::log(2.0 * M_PI) + sum(arma::log(cholDec.diag())) );
+      
+ if (log == false) out = exp(out);
+
+ return( out );
+}
 
 
 /* 

@@ -2,13 +2,14 @@
 #include "internal.h"
 
 /*
- * Fast computation of Mahalanobis distance
-*/
-  
-/*
- *  Interface with R
-*/
+ *  Fast computation of Mahalanobis distance
+ *
+ * See ?maha() for a description of the arguments and output.
+ */
 
+/*
+ * Interface to R
+ */
 SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
 {
     using namespace Rcpp;
@@ -36,7 +37,7 @@ SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
   
 
 /* 
- *  Internal C++ function
+ *  Internal C++ function for Mahalanobis distance
 */
 arma::vec mahaInt(arma::mat & X,  
                   arma::vec & mu,  
@@ -46,7 +47,7 @@ arma::vec mahaInt(arma::mat & X,
 {
   using namespace arma;
   
-  /* Some sanity checks */
+  // Some sanity checks 
   if(mu.n_elem != sigma.n_cols) Rcpp::stop("The mean vector has a different dimensions from the covariance matrix.");
   if(X.n_cols != sigma.n_cols)  Rcpp::stop("The number of columns of X is different from the dimension of the covariance matrix.");
                    
@@ -64,8 +65,11 @@ arma::vec mahaInt(arma::mat & X,
     
   vec out(X.n_rows);
   
+  #ifdef SUPPORT_OPENMP
   #pragma omp parallel num_threads(ncores) if(ncores > 1)                       
   {
+  #endif
+  
   // Declaring some private variables
   int d = X.n_cols;
   int n = X.n_rows;
@@ -74,8 +78,12 @@ arma::vec mahaInt(arma::mat & X,
     
   double acc;
   int icol, irow, ii;  
-    
+  
+  // For each of the "n" random vectors, forwardsolve the corresponding linear system.
+  // Forwardsolve because I'm using the lower triangle Cholesky.
+  #ifdef SUPPORT_OPENMP
   #pragma omp for schedule(static)
+  #endif
   for(icol = 0; icol < n; icol++)
   {
         
@@ -90,7 +98,10 @@ arma::vec mahaInt(arma::mat & X,
     
     out.at(icol) = sum(square(tmp)); 
   }
+  
+  #ifdef SUPPORT_OPENMP
   }
+  #endif
     
   return out;
 }

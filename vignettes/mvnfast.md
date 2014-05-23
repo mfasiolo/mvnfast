@@ -7,10 +7,8 @@
 An Introduction to **mvnfast**
 =======================================
   
-```{r setup, include=FALSE}
-library(knitr)
-opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)
-```
+
+
 
 
 Introduction
@@ -32,7 +30,8 @@ Simulating multivariate normal random vectors
 Simulating multivariate normal random variables is an essential step in many Monte Carlo algorithms (such as MCMC or Particle Filters),
  hence this operations has to be as fast as possible. Here we compare the `rmvn` function with the equivalent function `rmvnorm` 
 (from the `mvtnorm` package) and `mvrnorm` (from the `MASS` package). In particular, we simulate $10^4$ twenty-dimensional random vectors:
-```{r rmvn}
+
+```r
 library("microbenchmark")
 library("mvtnorm")
 library("mvnfast")
@@ -52,6 +51,16 @@ microbenchmark(rmvn(N, mu, mcov, ncores = 2),
                mvrnorm(N, mu, mcov))
 ```
 
+```
+## Unit: milliseconds
+##                           expr   min    lq median    uq    max neval
+##  rmvn(N, mu, mcov, ncores = 2) 19.20 19.44  20.26 21.43  45.25   100
+##              rmvn(N, mu, mcov) 37.39 37.57  38.35 39.30  63.65   100
+##           rmvnorm(N, mu, mcov) 48.71 55.62  59.51 66.93  93.03   100
+##           mvrnorm(N, mu, mcov) 46.47 52.24  55.66 61.40 108.49   100
+```
+
+
 In this example `rmvn` cuts the computational time, relative to the alternatives, even when a single core is used. This gain is attributable to several factors: the use of C++ code and efficient numerical algorithms to simulate the random variables. Parallelizing the computation on two cores gives another appreciable speed-up. To be fair, it is necessary to point out that `rmvnorm` and `mvrnorm` have many more safety check on the user's input than `rmvn`. This is true also for the functions described in the next sections.
 
 Finally, notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one 
@@ -62,7 +71,8 @@ Evaluating the multivariate normal density
 
 Here we compare the `dmvn` function, which evaluates the multivariate normal density,  with the equivalent function `dmvtnorm` (from the `mvtnorm` package). 
 In particular we evaluate the density of $10^4$ twenty-dimensional random vectors:
-```{r dmvn}
+
+```r
 # Generating random vectors 
 N <- 10000
 d <- 20
@@ -73,8 +83,17 @@ X <- rmvn(N, mu, mcov)
 
 microbenchmark(dmvn(X, mu, mcov, ncores = 2),
                dmvn(X, mu, mcov),
-               dmvnorm(X, mu, mcov))
+               dmvnorm(X, mu, mcov, trustme = T))
 ```
+
+```
+## Unit: milliseconds
+##                               expr   min    lq median    uq    max neval
+##      dmvn(X, mu, mcov, ncores = 2) 5.114 5.203  5.234 5.282  6.570   100
+##                  dmvn(X, mu, mcov) 7.256 7.318  7.349 7.404  7.838   100
+##  dmvnorm(X, mu, mcov, trustme = T) 7.688 8.835  9.020 9.186 33.993   100
+```
+
 Again, we get some speed-up using C++ code and some more from the parallelization.
 
 Evaluating the Mahalanobis distance
@@ -82,7 +101,8 @@ Evaluating the Mahalanobis distance
 
 Finally, we compare the `maha` function, which evaluates the square [mahalanobis distance](http://en.wikipedia.org/wiki/Mahalanobis_distance) with the equivalent function `mahalanobis` (from the `stats` package). 
 Also in the case we use $10^4$ twenty-dimensional random vectors:
-```{r maha}
+
+```r
 # Generating random vectors 
 N <- 10000
 d <- 20
@@ -95,6 +115,15 @@ microbenchmark(maha(X, mu, mcov, ncores = 2),
                maha(X, mu, mcov),
                mahalanobis(X, mu, mcov))
 ```
+
+```
+## Unit: milliseconds
+##                           expr    min     lq median     uq    max neval
+##  maha(X, mu, mcov, ncores = 2)  3.368  3.467  3.774  4.741  8.225   100
+##              maha(X, mu, mcov)  5.535  5.593  5.771  7.048 31.478   100
+##       mahalanobis(X, mu, mcov) 11.892 15.436 18.157 21.886 53.244   100
+```
+
 The acceleration is similar to that obtained in the previous sections.
 
 Example: mean-shift mode seeking algorithm
@@ -103,7 +132,8 @@ Example: mean-shift mode seeking algorithm
 As an example application of the `dmvn` function, we implemented the [mean-shift mode seeking](http://en.wikipedia.org/wiki/Mean-shift) algorithm.
 This procedure can be used to find the mode or maxima of a kernel density function, and it can be used to set up
 clustering algorithms. Here we simulate $10^4$ d-dimensional random vectors from mixture of normal distributions: 
-```{r mixSim}
+
+```r
 set.seed(5135)
 N <- 10000
 d <- 2
@@ -115,8 +145,10 @@ bin <- rbinom(N, 1, 0.5)
 
 X <- bin * rmvn(N, mu1, Cov1) + (!bin) * rmvn(N, mu2, Cov2)
 ```
+
 Finally, we plot the resulting probability density and, starting from 10 initial points,  we use mean-shift to converge to the nearest mode:
-```{r mixPlot}
+
+```r
 # Plotting
 np <- 100
 xvals <- seq(min(X[ , 1]), max(X[ , 1]), length.out = np)
@@ -148,6 +180,9 @@ invisible( lapply(traj,
                     points(tail(input[ , 1]), tail(input[ , 2]))
            }))
 ```
+
+<img src="figure/mixPlot.png" title="plot of chunk mixPlot" alt="plot of chunk mixPlot" style="display:block; margin: auto" style="display: block; margin: auto;" />
+
 As we can see from the plot, each initial point leads one of two points that are very close to the true mode. Notice that the bandwidth for the kernel density estimator was chosen by trial-and-error, and less arbitrary choices are certainly possible in real applications. 
  
 References

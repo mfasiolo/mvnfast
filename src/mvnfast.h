@@ -28,4 +28,6 @@ RcppExport SEXP dmvnCpp(SEXP X_, SEXP mu_, SEXP sigma_, SEXP log_, SEXP ncores_,
 
 RcppExport SEXP rmvnCpp(SEXP n_, SEXP mu_, SEXP sigma_, SEXP ncores_, SEXP isChol_);
 
+RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP store_);
+
 #endif

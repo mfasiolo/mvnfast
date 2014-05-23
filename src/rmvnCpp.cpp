@@ -1,9 +1,11 @@
 #include "mvnfast.h"
 #include "internal.h"
+#include "sitmo.h"
 
 /*
- * Fast computation of pdf of a multivariate normal distribution
+ * Simulate random variables from a multivariate normal distribution
  *
+ * See ?rmvn() for a description of the arguments and output.
 */
 
 SEXP rmvnCpp(SEXP n_,  
@@ -26,7 +28,7 @@ SEXP rmvnCpp(SEXP n_,
       
       int d = mu.n_elem;
     
-      // Calculate cholesky dec unless sigma is alread a cholesky dec.
+      // Calculate cholesky dec unless sigma is already a cholesky dec.
       arma::mat cholDec;
       if( isChol == false ) {
         cholDec = trimatu( arma::chol(sigma) );
@@ -35,16 +37,17 @@ SEXP rmvnCpp(SEXP n_,
         cholDec = trimatu( sigma );
       }
                   
-      // This is the matrix that will be filled with standard normal, we wrap into a arma::mat
+      // This "out" the matrix that will be filled with firstly with standard normal rvs,
+      // and finally with multivariate normal rvs.
+      // We wrap into a arma::mat "tmp" without making a copy.
       NumericMatrix out(n, d);
       arma::mat tmp( out.begin(), out.nrow(), out.ncol(), false );
       
-      // What I to seed the C++11 rng is tricky. I produce "ncores" uniform numbers between 1 and the largest uint64_t,
+      // What I do to seed the sitmo::prng_engine is tricky. I produce "ncores" uniform numbers between 1 and the largest uint32_t,
       // which are the seeds. I put the first one in "coreSeed". If there is no support for OpenMP only this seed
-      // will be used, as the computations will be sequential. If there is support for OpenMP "coreSeed" will
+      // will be used, as the computations will be sequential. If there is support for OpenMP, "coreSeed" will
       // be over-written, so that each core will get its own seed.
-      
-      NumericVector seeds = runif(ncores, 1.0, std::numeric_limits<uint64_t>::max());
+      NumericVector seeds = runif(ncores, 1.0, std::numeric_limits<uint32_t>::max());
       
       #ifdef SUPPORT_OPENMP
       #pragma omp parallel num_threads(ncores) if(ncores > 1)
@@ -54,16 +57,18 @@ SEXP rmvnCpp(SEXP n_,
       double acc;
       int irow, icol, ii;
       arma::rowvec work(d);
+            
+      uint32_t coreSeed = static_cast<uint32_t>(seeds[0]);
       
-      uint64_t coreSeed = static_cast<uint64_t>(seeds[0]);
-      
+      // (Optionally) over-writing the seed here
       #ifdef SUPPORT_OPENMP
-      coreSeed = static_cast<uint64_t>( seeds[omp_get_thread_num()] );
+      coreSeed = static_cast<uint32_t>( seeds[omp_get_thread_num()] );
       #endif
       
-      std::mt19937_64 engine( coreSeed );
+      sitmo::prng_engine engine( coreSeed );
       std::normal_distribution<> normal(0.0, 1.0);
       
+      // Filling "out" with standard normal rvs
       #ifdef SUPPORT_OPENMP
       #pragma omp for schedule(static)
       #endif
@@ -71,6 +76,8 @@ SEXP rmvnCpp(SEXP n_,
         for (icol = 0; icol < d; icol++) 
            out(irow, icol) = normal(engine);
       
+      // Multiplying "out"" by cholesky decomposition of covariance and adding the
+      // mean to obtain the desired multivariate normal data rvs.
       #ifdef SUPPORT_OPENMP
       #pragma omp for schedule(static)
       #endif

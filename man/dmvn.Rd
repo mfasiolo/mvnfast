@@ -2,8 +2,7 @@
 \alias{dmvn}
 \title{Fast computation of the multivariate normal density.}
 \usage{
-dmvn(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE,
-  verbose = TRUE)
+dmvn(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE)
 }
 \arguments{
   \item{X}{matrix n by d where each row is a d dimensional
@@ -17,15 +16,14 @@ dmvn(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE,
   can be the cholesky decomposition of the covariance. In
   that case isChol should be set to TRUE.}
 
-  \item{isChol}{boolean set to true is \code{sigma} is the
-  cholesky decomposition of the covariance matrix.}
-
   \item{log}{boolean set to true the logarithm of the pdf
   is required.}
 
-  \item{verbose}{if TRUE (which is the default) the
-  function will complain if \code{sigma} has zeros on the
-  main diagonal.}
+  \item{ncores}{Number of cores used. The parallelization
+  will take place only if OpenMP is supported.}
+
+  \item{isChol}{boolean set to true is \code{sigma} is the
+  cholesky decomposition of the covariance matrix.}
 }
 \value{
 a vector of length n where the i-the entry contains the pdf

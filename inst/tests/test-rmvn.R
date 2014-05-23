@@ -1,3 +1,5 @@
+context("rmvn()")
+
 test_that("Checking rmvn()", {
   
   ##########
