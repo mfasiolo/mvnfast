@@ -71,13 +71,13 @@ arma::vec mahaInt(arma::mat & X,
   #endif
   
   // Declaring some private variables
-  int d = X.n_cols;
-  int n = X.n_rows;
+  uint32_t d = X.n_cols;
+  uint32_t n = X.n_rows;
   
   vec tmp(d);  
     
   double acc;
-  int icol, irow, ii;  
+  uint32_t icol, irow, ii;  
   
   // For each of the "n" random vectors, forwardsolve the corresponding linear system.
   // Forwardsolve because I'm using the lower triangle Cholesky.

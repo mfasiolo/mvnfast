@@ -20,7 +20,7 @@ SEXP rmvnCpp(SEXP n_,
       
       RNGScope scope;
       
-      int n = as<int>(n_);
+      int n = as<uint32_t>(n_);
       arma::rowvec mu = as<arma::rowvec>(mu_);  
       arma::mat sigma = as<arma::mat>(sigma_); 
       int  ncores = as<int>(ncores_); 
@@ -55,7 +55,7 @@ SEXP rmvnCpp(SEXP n_,
       #endif
       
       double acc;
-      int irow, icol, ii;
+      uint32_t irow, icol, ii;
       arma::rowvec work(d);
             
       uint32_t coreSeed = static_cast<uint32_t>(seeds[0]);

@@ -21,7 +21,7 @@ SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP sto
       bool store = as<bool>(store_);
       
       int d = init.n_elem;
-      int n = X.n_rows;
+      uint32_t n = X.n_rows;
       
       if( d != X.n_cols ) stop( "The ncol(X) has to equal to length(init)" );
       
