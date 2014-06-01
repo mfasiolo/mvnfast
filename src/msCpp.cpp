@@ -49,5 +49,5 @@ RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol
     } catch(...){
       ::Rf_error( "c++ exception (unknown reason)" );
     }
-    
-  }
+    return wrap(NA_REAL);
+}
