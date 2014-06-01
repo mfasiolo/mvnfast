@@ -19,7 +19,7 @@ SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
       arma::mat X_ = as<arma::mat>(X);
       arma::vec mu_ = as<arma::vec>(mu);  
       arma::mat sigma_ = as<arma::mat>(sigma); 
-      int ncores_ = as<int>(ncores);
+      unsigned int ncores_ = as<unsigned int>(ncores);
       bool isChol_ = as<bool>(isChol);
         
       NumericVector dist = wrap( mahaInt(X_, mu_, sigma_, ncores_, isChol_) );
@@ -42,7 +42,7 @@ SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
 arma::vec mahaInt(arma::mat & X,  
                   arma::vec & mu,  
                   arma::mat & sigma,
-                  const int ncores,
+                  const unsigned int ncores,
                   const bool isChol = false)
 {
   using namespace arma;

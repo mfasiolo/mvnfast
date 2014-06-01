@@ -24,7 +24,7 @@ SEXP dmvnCpp(SEXP X_,
       arma::vec mu = as<arma::vec>(mu_);  
       arma::mat sigma = as<arma::mat>(sigma_); 
       bool log = as<bool>(log_); 
-      int  ncores = as<int>(ncores_); 
+      unsigned int  ncores = as<unsigned int>(ncores_); 
       bool isChol = as<bool>(isChol_);
       
       // Calculate cholesky dec. unless sigma is alread a cholesky dec.
@@ -53,11 +53,11 @@ SEXP dmvnCpp(SEXP X_,
 /* 
  *  Internal C++ function
 */
-arma::vec dmvnInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, int ncores)
+arma::vec dmvnInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, unsigned int ncores)
 {
  using namespace arma;
   
- int d = X.n_cols;
+ unsigned int d = X.n_cols;
       
  vec out = - 0.5 * mahaInt(X, mu, cholDec, ncores, true);
         

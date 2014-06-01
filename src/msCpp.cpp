@@ -16,11 +16,11 @@ SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP sto
       arma::vec init = as<arma::vec>(init_);
       arma::mat X = as<arma::mat>(X_); 
       arma::mat cholDec = as<arma::mat>(cholDec_); 
-      int ncores = as<int>(ncores_);
+      unsigned int ncores = as<unsigned int>(ncores_);
       double tol = as<double>(tol_);
       bool store = as<bool>(store_);
       
-      int d = init.n_elem;
+      unsigned int d = init.n_elem;
       uint32_t n = X.n_rows;
       
       if( d != X.n_cols ) stop( "The ncol(X) has to equal to length(init)" );

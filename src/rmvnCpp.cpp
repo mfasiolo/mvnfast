@@ -20,13 +20,13 @@ SEXP rmvnCpp(SEXP n_,
       
       RNGScope scope;
       
-      int n = as<uint32_t>(n_);
+      uint32_t n = as<uint32_t>(n_);
       arma::rowvec mu = as<arma::rowvec>(mu_);  
       arma::mat sigma = as<arma::mat>(sigma_); 
-      int  ncores = as<int>(ncores_); 
+      unsigned int  ncores = as<unsigned int>(ncores_); 
       bool isChol = as<bool>(isChol_); 
       
-      int d = mu.n_elem;
+      unsigned int d = mu.n_elem;
     
       // Calculate cholesky dec unless sigma is already a cholesky dec.
       arma::mat cholDec;
