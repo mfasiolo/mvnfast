@@ -3,6 +3,7 @@
 
 #include <RcppArmadillo.h>
 #include <random>
+#include "sitmo.h"
 
 #ifdef SUPPORT_OPENMP
 #include <omp.h>
@@ -20,12 +21,8 @@
  * on Rcpp-devel for a misuse of RcppExport
  */
  
-RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol);
+arma::vec mahaInt(arma::mat & X,  arma::vec & mu, arma::mat & sigma, unsigned int ncores, bool isChol);
 
-RcppExport SEXP dmvnCpp(SEXP X_, SEXP mu_, SEXP sigma_, SEXP log_, SEXP ncores_, SEXP isChol_);
-
-RcppExport SEXP rmvnCpp(SEXP n_, SEXP mu_, SEXP sigma_, SEXP ncores_, SEXP isChol_);
-
-RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP store_);
+arma::vec dmvnInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, unsigned int ncores);
 
 #endif

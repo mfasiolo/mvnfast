@@ -1,5 +1,4 @@
 #include "mvnfast.h"
-#include "internal.h"
 
 /*
  *  Mean-shift algorithm
@@ -7,7 +6,7 @@
  * See ?ms() for a description of the arguments and output.
 */
 
-SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP store_)
+RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP store_)
 {
     using namespace Rcpp;
     
@@ -30,7 +29,7 @@ SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP sto
       arma::vec weights(n);
       std::list< std::vector<double> > traj;
             
-      if(store) traj.push_back( as<std::vector<double>>( wrap(init) ) );
+      if(store) traj.push_back( as< std::vector<double> >( wrap(init) ) );
       
       do{
         
@@ -38,7 +37,7 @@ SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP sto
         weights = dmvnInt(X, oldPos, cholDec, false, ncores);
         currPos = arma::conv_to<arma::vec>::from( weights.t() * X / sum(weights) ); 
     
-        if(store) traj.push_back( as<std::vector<double>>( wrap(currPos) ) );
+        if(store) traj.push_back( as< std::vector<double> >( wrap(currPos) ) );
         
       }
       while( any( abs(currPos - oldPos) > tol ) );

@@ -1,6 +1,4 @@
 #include "mvnfast.h"
-#include "internal.h"
-#include "sitmo.h"
 
 /*
  * Simulate random variables from a multivariate normal distribution
@@ -8,7 +6,7 @@
  * See ?rmvn() for a description of the arguments and output.
 */
 
-SEXP rmvnCpp(SEXP n_,  
+RcppExport SEXP rmvnCpp(SEXP n_,  
              SEXP mu_,  
              SEXP sigma_,
              SEXP ncores_,

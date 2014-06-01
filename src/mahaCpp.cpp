@@ -1,5 +1,4 @@
 #include "mvnfast.h"
-#include "internal.h"
 
 /*
  *  Fast computation of Mahalanobis distance
@@ -10,7 +9,7 @@
 /*
  * Interface to R
  */
-SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
+RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
 {
     using namespace Rcpp;
     

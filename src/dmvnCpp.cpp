@@ -1,5 +1,4 @@
 #include "mvnfast.h"
-#include "internal.h"
 
 /*
  * Fast computation of pdf of a multivariate normal distribution
@@ -10,7 +9,7 @@
 /*
  * Interface to R
  */
-SEXP dmvnCpp(SEXP X_,  
+RcppExport SEXP dmvnCpp(SEXP X_,  
              SEXP mu_,  
              SEXP sigma_, 
              SEXP log_,
