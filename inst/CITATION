@@ -1,18 +1,17 @@
-citHeader("To cite the synlik package in publications use:")
+citHeader("To cite the mvnfast package in publications use:")
 
 citEntry(
          entry="Manual",
-         title="An introduction to synlik (2014). R package version 0.1.0.",
+         title="An introduction to mvnfast. R package version 0.1.0.",
          author=personList(
- 	   as.person("Matteo Fasiolo"),
-	   as.person("Simon Wood")
+     as.person("Matteo Fasiolo")
 	   ),	   
 	 year=2014,
-	 url="http://XXX.org",
+	 url="http://cran.r-project.org/web/packages/mvnfast/vignettes/mvnfast.html",
 	 textVersion=paste(
-			   "Matteo Fasiolo, Simon Wood.",
-			   "An introduction to synlik (2014). R package version 0.1.0."
+			   "Matteo Fasiolo.",
+			   "An introduction to mvnfast (2014). R package version 0.1.0."
 			  )	   
 	 )		 
 
-citFooter("As synlik is often updated, you may want to cite its version number. Find it with 'help(package=synlik)'.")
+citFooter("As mvnfast is often updated, you may want to cite its version number. Find it with 'help(package=mvnfast)'.")
