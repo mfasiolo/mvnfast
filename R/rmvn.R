@@ -41,6 +41,14 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE)
   
   if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
   
+  if( ncores > 1 && grepl('SunOS', Sys.info()['sysname']) ){
+    
+    message("This function can't be use on multiple cores under Solaris. I am resetting \"ncores\" to 1.")
+    
+    ncores <- 1
+    
+  }
+
   .Call( "rmvnCpp", 
          n_ = n, 
          mu_ = mu, 

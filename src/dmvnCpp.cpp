@@ -1,5 +1,5 @@
 /* 
-Copyright (C) 2000-2012 Matteo Fasiolo  matteo.fasiolo@gmail.com
+Copyright (C) 2014 Matteo Fasiolo  matteo.fasiolo@gmail.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
