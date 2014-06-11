@@ -8,7 +8,6 @@ Maintainer: Matteo Fasiolo <matteo.fasiolo@gmail.com>
 Description: The package provides computationally efficient tools related to the multivariate normal distribution. The main functionalities are: simulating multivariate normal random vectors, evaluating multivariate normal densities and Mahalanobis distances. These tools are very efficient thanks to the use of C++ code and of the OpenMP API.
 License: GPL (>= 2.0)
 URL: https://github.com/mfasiolo/mvnfast, www.sitmo.com
-Depends: R (>= 3.1.0)
 Imports:
     Rcpp (>= 0.10.4)
 Suggests: 
@@ -18,5 +17,5 @@ Suggests:
     microbenchmark,
     MASS,
     plyr
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo, BH
 VignetteBuilder: knitr

@@ -83,7 +83,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       #endif
       
       sitmo::prng_engine engine( coreSeed );
-      std::normal_distribution<> normal(0.0, 1.0);
+      boost::normal_distribution<> normal(0.0, 1.0);
       
       // Filling "out" with standard normal rvs
       #ifdef SUPPORT_OPENMP

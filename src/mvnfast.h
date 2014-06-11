@@ -2,7 +2,7 @@
 #define _MVNFAST_H
 
 #include <RcppArmadillo.h>
-#include <random>
+#include "boost_normal.hpp"
 #include "sitmo.h"
 
 #ifdef SUPPORT_OPENMP
