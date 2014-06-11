@@ -3,7 +3,7 @@ Type: Package
 Title: Fast multivariate normal methods
 Version: 0.1.1
 Date: 2014-06-10
-Author: Matteo Fasiolo, employing the C++ parallel RNG provided by Thijs van den Berg 
+Author: Matteo Fasiolo, using the C++ parallel RNG of Thijs van den Berg and Ziggurat algorithm of Jens Maurer and Steven Watanabe (boost) 
 Maintainer: Matteo Fasiolo <matteo.fasiolo@gmail.com>
 Description: The package provides computationally efficient tools related to the multivariate normal distribution. The main functionalities are: simulating multivariate normal random vectors, evaluating multivariate normal densities and Mahalanobis distances. These tools are very efficient thanks to the use of C++ code and of the OpenMP API.
 License: GPL (>= 2.0)
