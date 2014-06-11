@@ -2,8 +2,8 @@
 #define _MVNFAST_H
 
 #include <RcppArmadillo.h>
-#include "boost_normal.hpp"
-#include "sitmo.h"
+#include "boost/boost_normal.hpp"
+#include "sitmo/sitmo.hpp"
 
 #ifdef SUPPORT_OPENMP
 #include <omp.h>

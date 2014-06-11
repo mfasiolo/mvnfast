@@ -1,8 +1,8 @@
 Package: mvnfast
 Type: Package
 Title: Fast multivariate normal methods
-Version: 0.1.0
-Date: 2014-06-08
+Version: 0.1.1
+Date: 2014-06-10
 Author: Matteo Fasiolo, employing the C++ parallel RNG provided by Thijs van den Berg 
 Maintainer: Matteo Fasiolo <matteo.fasiolo@gmail.com>
 Description: The package provides computationally efficient tools related to the multivariate normal distribution. The main functionalities are: simulating multivariate normal random vectors, evaluating multivariate normal densities and Mahalanobis distances. These tools are very efficient thanks to the use of C++ code and of the OpenMP API.
