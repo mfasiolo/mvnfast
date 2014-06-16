@@ -54,10 +54,10 @@ microbenchmark(rmvn(N, mu, mcov, ncores = 2),
 ```
 ## Unit: milliseconds
 ##                           expr    min     lq median     uq   max neval
-##  rmvn(N, mu, mcov, ncores = 2)  2.657  2.738  2.823  3.244 25.18   100
-##              rmvn(N, mu, mcov)  5.030  5.079  5.122  5.469 27.63   100
-##           rmvnorm(N, mu, mcov) 22.463 23.097 23.363 23.756 47.81   100
-##           mvrnorm(N, mu, mcov) 21.483 22.011 22.183 22.546 45.25   100
+##  rmvn(N, mu, mcov, ncores = 2)  2.637  2.773  2.856  3.300 25.12   100
+##              rmvn(N, mu, mcov)  5.036  5.075  5.115  5.378 27.59   100
+##           rmvnorm(N, mu, mcov) 22.440 23.105 23.215 23.437 50.79   100
+##           mvrnorm(N, mu, mcov) 21.528 22.016 22.218 22.552 45.15   100
 ```
 
 
@@ -89,9 +89,9 @@ microbenchmark(dmvn(X, mu, mcov, ncores = 2),
 ```
 ## Unit: milliseconds
 ##                           expr   min    lq median    uq    max neval
-##  dmvn(X, mu, mcov, ncores = 2) 1.810 1.848  1.879 1.929  2.467   100
-##              dmvn(X, mu, mcov) 2.961 3.005  3.032 3.075  3.456   100
-##           dmvnorm(X, mu, mcov) 3.687 4.145  4.227 4.293 27.157   100
+##  dmvn(X, mu, mcov, ncores = 2) 1.785 1.830  1.864 1.911  2.779   100
+##              dmvn(X, mu, mcov) 2.975 3.015  3.043 3.081  3.655   100
+##           dmvnorm(X, mu, mcov) 3.640 3.904  4.220 4.396 27.663   100
 ```
 
 Again, we get some speed-up using C++ code and some more from the parallelization.
@@ -119,9 +119,9 @@ microbenchmark(maha(X, mu, mcov, ncores = 2),
 ```
 ## Unit: milliseconds
 ##                           expr   min    lq median    uq    max neval
-##  maha(X, mu, mcov, ncores = 2) 1.332 1.388  1.413 1.473  1.751   100
-##              maha(X, mu, mcov) 2.509 2.571  2.607 2.645  2.710   100
-##       mahalanobis(X, mu, mcov) 6.161 6.743  6.909 7.169 30.243   100
+##  maha(X, mu, mcov, ncores = 2) 1.336 1.392  1.410 1.469  1.964   100
+##              maha(X, mu, mcov) 2.511 2.557  2.601 2.637  3.171   100
+##       mahalanobis(X, mu, mcov) 6.144 6.664  6.738 6.925 29.918   100
 ```
 
 The acceleration is similar to that obtained in the previous sections.

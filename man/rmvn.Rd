@@ -39,6 +39,10 @@ initialization of the RNG depends on R's seed, hence the
 reproducible results. Notice though that changing
 \code{ncores} causes most of the generated numbers to be
 different even if R's seed is the same (see example below).
+N.B. At the moment the RNG does not work properly on
+Solaris OS when \code{ncores>1}. Hence, \code{rmvn()}
+checks if the OS is Solaris and, if this the case, it
+imposes \code{ncores==1}.
 }
 \examples{
 d <- 5
@@ -59,11 +63,11 @@ rmvn(4, 1:d, mcov, ncores = 2) # r.v. generated on the second core are different
 }
 \author{
 Matteo Fasiolo <matteo.fasiolo@gmail.com>, C++ RNG engine
-provided by Thijs van den Berg <http://sitmo.com/>.
+by Thijs van den Berg <http://sitmo.com/>.
 }
 \references{
 John K. Salmon, Mark A. Moraes, Ron O. Dror, and David E.
 Shaw (2011). Parallel Random Numbers: As Easy as 1, 2, 3.
-D. E. Shaw Research, New York, NY 10036, USA
+D. E. Shaw Research, New York, NY 10036, USA.
 }
 

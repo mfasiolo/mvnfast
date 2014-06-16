@@ -13,7 +13,9 @@
 #'          RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers.
 #'          The initialization of the RNG depends on R's seed, hence the \code{set.seed()} function can be used to 
 #'          obtain reproducible results. Notice though that changing \code{ncores} causes most of the generated numbers
-#'          to be different even if R's seed is the same (see example below).
+#'          to be different even if R's seed is the same (see example below). NB: at the moment the RNG does not work
+#'          properly on Solaris OS when \code{ncores>1}. Hence, \code{rmvn()} checks if the OS is Solaris and, if this the case, 
+#'          it imposes \code{ncores==1}. 
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com>, C++ RNG engine by Thijs van den Berg <http://sitmo.com/>.
 #' @references  John K. Salmon, Mark A. Moraes, Ron O. Dror, and David E. Shaw (2011). Parallel Random Numbers: As Easy as 1, 2, 3.
 #'              D. E. Shaw Research, New York, NY 10036, USA.
@@ -43,7 +45,7 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE)
   
   if( ncores > 1 && grepl('SunOS', Sys.info()['sysname']) ){
     
-    message("This function can't be use on multiple cores under Solaris. I am resetting \"ncores\" to 1.")
+    message("rmvn() cannot be used on multiple cores under Solaris. I am resetting \"ncores\" to 1.")
     
     ncores <- 1
     

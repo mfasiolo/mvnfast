@@ -2,7 +2,7 @@ citHeader("To cite the mvnfast package in publications use:")
 
 citEntry(
          entry="Manual",
-         title="An introduction to mvnfast. R package version 0.1.1.",
+         title="An introduction to mvnfast. R package version 0.1.2.",
          author=personList(
      as.person("Matteo Fasiolo")
 	   ),	   
@@ -10,7 +10,7 @@ citEntry(
 	 url="http://cran.r-project.org/web/packages/mvnfast/vignettes/mvnfast.html",
 	 textVersion=paste(
 			   "Matteo Fasiolo.",
-			   "An introduction to mvnfast (2014). R package version 0.1.1."
+			   "An introduction to mvnfast (2014). R package version 0.1.2."
 			  )	   
 	 )		 
 
