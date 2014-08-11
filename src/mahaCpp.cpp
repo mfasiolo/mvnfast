@@ -66,6 +66,7 @@ arma::vec mahaInt(arma::mat & X,
   using namespace arma;
   
   // Some sanity checks 
+  if(ncores < 0) Rcpp::stop("ncores has to be positive.");
   if(mu.n_elem != sigma.n_cols) Rcpp::stop("The mean vector has a different dimensions from the covariance matrix.");
   if(X.n_cols != sigma.n_cols)  Rcpp::stop("The number of columns of X is different from the dimension of the covariance matrix.");
                    

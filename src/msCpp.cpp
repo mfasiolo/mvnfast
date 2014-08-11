@@ -42,7 +42,10 @@ RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol
       unsigned int d = init.n_elem;
       uint32_t n = X.n_rows;
       
+      if(ncores < 0) stop("ncores has to be positive.");
       if( d != X.n_cols ) stop( "The ncol(X) has to equal to length(init)" );
+      if( d != cholDec.n_cols ) stop( "The ncol(X) has to equal to cholDec.n_cols" );
+      if( d != cholDec.n_rows ) stop( "The ncol(X) has to equal to cholDec.n_rows" );
       
       arma::vec currPos = init; 
       arma::vec oldPos(d);

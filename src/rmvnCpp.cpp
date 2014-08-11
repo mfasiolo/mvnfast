@@ -26,16 +26,14 @@ USA. */
 */
 
 RcppExport SEXP rmvnCpp(SEXP n_,  
-             SEXP mu_,  
-             SEXP sigma_,
-             SEXP ncores_,
-             SEXP isChol_) 
+                        SEXP mu_,  
+                        SEXP sigma_,
+                        SEXP ncores_,
+                        SEXP isChol_) 
 { 
     using namespace Rcpp;
     
     try{
-      
-      RNGScope scope;
       
       uint32_t n = as<uint32_t>(n_);
       arma::rowvec mu = as<arma::rowvec>(mu_);  
@@ -44,6 +42,19 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       bool isChol = as<bool>(isChol_); 
       
       unsigned int d = mu.n_elem;
+      
+      if(n < 1) stop("n should be a positive integer");
+      if(ncores < 0) stop("ncores has to be positive");
+      if(d != sigma.n_cols) stop("mu.n_elem != sigma.n_cols");
+      if(d != sigma.n_rows) stop("mu.n_elem != sigma.n_rows");
+      
+      // This "out" the matrix that will be filled with firstly with standard normal rvs,
+      // and finally with multivariate normal rvs.
+      // We wrap into a arma::mat "tmp" without making a copy.
+      NumericMatrix out(n, d);
+      arma::mat tmp( out.begin(), out.nrow(), out.ncol(), false );
+      
+      RNGScope scope; // Declare RNGScope after the output in order to avoid a known Rcpp bug.
     
       // Calculate cholesky dec unless sigma is already a cholesky dec.
       arma::mat cholDec;
@@ -54,12 +65,6 @@ RcppExport SEXP rmvnCpp(SEXP n_,
         cholDec = trimatu( sigma );
       }
                   
-      // This "out" the matrix that will be filled with firstly with standard normal rvs,
-      // and finally with multivariate normal rvs.
-      // We wrap into a arma::mat "tmp" without making a copy.
-      NumericMatrix out(n, d);
-      arma::mat tmp( out.begin(), out.nrow(), out.ncol(), false );
-      
       // What I do to seed the sitmo::prng_engine is tricky. I produce "ncores" uniform numbers between 1 and the largest uint32_t,
       // which are the seeds. I put the first one in "coreSeed". If there is no support for OpenMP only this seed
       // will be used, as the computations will be sequential. If there is support for OpenMP, "coreSeed" will
@@ -81,7 +86,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       #ifdef SUPPORT_OPENMP
       coreSeed = static_cast<uint32_t>( seeds[omp_get_thread_num()] );
       #endif
-      
+       
       sitmo::prng_engine engine( coreSeed );
       boost::normal_distribution<> normal(0.0, 1.0);
       
@@ -105,9 +110,9 @@ RcppExport SEXP rmvnCpp(SEXP n_,
        {
         acc = 0.0;
         
-        for(ii = 0; ii <= icol; ii++) acc += tmp.at(irow, ii) * cholDec.at(ii, icol);
+        for(ii = 0; ii <= icol; ii++) acc += tmp.at(irow, ii) * cholDec.at(ii, icol); 
         
-        work.at(icol) = acc;
+        work.at(icol) = acc; 
         
        }
        
