@@ -3,5 +3,5 @@ exportPattern("^[[:alpha:]]+")
 
 # Imported stuff
 
-importFrom(Rcpp)
+importFrom(Rcpp, evalCpp)
 
