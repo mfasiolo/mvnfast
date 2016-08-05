@@ -47,7 +47,7 @@
 #'   points(out$final[1], out$final[2], col = 4, pch = 3, lwd = 3) # Estimated mode (blue)
 #'   points(start[1], start[2], col = 2, pch = 3, lwd = 3)         # ii-th starting value 
 #' }
-#' @export
+#' @export ms
 
 ms <- function(X, init, H, tol = 1e-6, ncores = 1, store = FALSE)
 {

@@ -41,7 +41,7 @@
 #'                maha(X, mu, myChol, isChol = TRUE),
 #'                mahalanobis(X, mu, mcov))
 #' }
-#' @export 
+#' @export maha
 
 maha <- function(X, mu, sigma, ncores = 1, isChol = FALSE)
 {

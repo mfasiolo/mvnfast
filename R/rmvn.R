@@ -36,7 +36,7 @@
 #' set.seed(414)  
 #' rmvn(4, 1:d, mcov, ncores = 2) # r.v. generated on the second core are different
 #' 
-#' @export 
+#' @export rmvn
 
 rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE)
 {

@@ -19,6 +19,7 @@ Introduction
 The `mvn` R package provides computationally efficient tools related to the multivariate normal distribution. 
 The tools are generally faster than those provided by other packages, thanks to the use of C++ code through the 
 `Rcpp`\\`RcppArmadillo` packages and parallelization through the `OpenMP` API. The most important functions are:
+
 - `rmvn()`: simulates multivariate normal random vectors.
 - `dmvn()`: evaluates the probability density function of a multivariate normal distribution.  
 - `maha()`: evaluates mahalanobis distances.
@@ -37,6 +38,9 @@ library("microbenchmark")
 library("mvtnorm")
 library("mvnfast")
 library("MASS")
+# We might also need to turn off BLAS parallelism 
+library("RhpcBLASctl")
+blas_set_num_threads(1)
 
 N <- 10000
 d <- 20
