@@ -23,22 +23,22 @@ test_that("Checking rmvn()", {
     ####### Sequential
     # Using covariance
     X <- rmvn(N[ii], mu, mcov)
-    expect_less_than(sum(sum(abs(colMeans(X) - mu))), tolMu)
-    expect_less_than(sum(sum(abs(cov(X) - mcov))), tolCov)
+    expect_lt(sum(sum(abs(colMeans(X) - mu))), tolMu)
+    expect_lt(sum(sum(abs(cov(X) - mcov))), tolCov)
     # Using Cholesky
     X <- rmvn(N[ii], mu, myChol, isChol = TRUE)
-    expect_less_than(sum(sum(abs(colMeans(X) - mu))), tolMu)
-    expect_less_than(sum(sum(abs(cov(X) - mcov))), tolCov)
+    expect_lt(sum(sum(abs(colMeans(X) - mu))), tolMu)
+    expect_lt(sum(sum(abs(cov(X) - mcov))), tolCov)
     
     ####### Parallel
     # Using covariance
     X <- rmvn(N[ii], mu, mcov, ncores = 2)
-    expect_less_than(sum(sum(abs(colMeans(X) - mu))), tolMu)
-    expect_less_than(sum(sum(abs(cov(X) - mcov))), tolCov)
+    expect_lt(sum(sum(abs(colMeans(X) - mu))), tolMu)
+    expect_lt(sum(sum(abs(cov(X) - mcov))), tolCov)
     # Using Cholesky
     X <- rmvn(N[ii], mu, myChol, ncores = 2, isChol = TRUE)
-    expect_less_than(sum(sum(abs(colMeans(X) - mu))), tolMu)
-    expect_less_than(sum(sum(abs(cov(X) - mcov))), tolCov)
+    expect_lt(sum(sum(abs(colMeans(X) - mu))), tolMu)
+    expect_lt(sum(sum(abs(cov(X) - mcov))), tolCov)
  
     message(paste("Test", ii, "passed."))
   }

@@ -15,7 +15,7 @@ test_that("Checking ms()", {
   
   # Sequential
   out1 <- ms(X, init = start, H = 0.1 * sigma, store = TRUE)
-  expect_less_than(sum(abs(out1$final - mu)), 2e-1)
+  expect_lt(sum(abs(out1$final - mu)), 2e-1)
   expect_equal(drop(head(out1$traj, 1)), start)
   expect_equal(unname(drop(tail(out1$traj, 1))), drop(out1$final))
   
@@ -36,7 +36,7 @@ test_that("Checking ms()", {
   
   # Sequential
   out1 <- ms(X, init = start, H = 0.1 * sigma, store = TRUE)
-  expect_less_than(sum(abs(out1$final - mu)), 4e-1)
+  expect_lt(sum(abs(out1$final - mu)), 4e-1)
   expect_equal(drop(head(out1$traj, 1)), start)
   expect_equal(unname(drop(tail(out1$traj, 1))), drop(out1$final))
   

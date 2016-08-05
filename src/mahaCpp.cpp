@@ -84,7 +84,7 @@ arma::vec mahaInt(arma::mat & X,
     
   vec out(X.n_rows);
   
-  #ifdef SUPPORT_OPENMP
+  #ifdef _OPENMP
   #pragma omp parallel num_threads(ncores) if(ncores > 1)                       
   {
   #endif
@@ -100,7 +100,7 @@ arma::vec mahaInt(arma::mat & X,
   
   // For each of the "n" random vectors, forwardsolve the corresponding linear system.
   // Forwardsolve because I'm using the lower triangle Cholesky.
-  #ifdef SUPPORT_OPENMP
+  #ifdef _OPENMP
   #pragma omp for schedule(static)
   #endif
   for(icol = 0; icol < n; icol++)
@@ -118,7 +118,7 @@ arma::vec mahaInt(arma::mat & X,
     out.at(icol) = sum(square(tmp)); 
   }
   
-  #ifdef SUPPORT_OPENMP
+  #ifdef _OPENMP
   }
   #endif
     

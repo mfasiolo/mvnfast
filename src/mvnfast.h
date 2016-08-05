@@ -2,10 +2,10 @@
 #define _MVNFAST_H
 
 #include <RcppArmadillo.h>
-#include "boost/boost_normal.hpp"
+#include <boost/random/normal_distribution.hpp>
 #include "sitmo/sitmo.hpp"
 
-#ifdef SUPPORT_OPENMP
+#ifdef _OPENMP
 #include <omp.h>
 #endif
 
@@ -21,7 +21,7 @@
  * on Rcpp-devel for a misuse of RcppExport
  */
  
-arma::vec mahaInt(arma::mat & X,  arma::vec & mu, arma::mat & sigma, unsigned int ncores, bool isChol);
+arma::vec mahaInt(arma::mat & X, arma::vec & mu, arma::mat & sigma, unsigned int ncores, bool isChol);
 
 arma::vec dmvnInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, unsigned int ncores);
 

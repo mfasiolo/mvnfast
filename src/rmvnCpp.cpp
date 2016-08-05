@@ -71,7 +71,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       // be over-written, so that each core will get its own seed.
       NumericVector seeds = runif(ncores, 1.0, std::numeric_limits<uint32_t>::max());
       
-      #ifdef SUPPORT_OPENMP
+      #ifdef _OPENMP
       #pragma omp parallel num_threads(ncores) if(ncores > 1)
       {
       #endif
@@ -83,7 +83,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       uint32_t coreSeed = static_cast<uint32_t>(seeds[0]);
       
       // (Optionally) over-writing the seed here
-      #ifdef SUPPORT_OPENMP
+      #ifdef _OPENMP
       coreSeed = static_cast<uint32_t>( seeds[omp_get_thread_num()] );
       #endif
        
@@ -91,7 +91,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       boost::normal_distribution<> normal(0.0, 1.0);
       
       // Filling "out" with standard normal rvs
-      #ifdef SUPPORT_OPENMP
+      #ifdef _OPENMP
       #pragma omp for schedule(static)
       #endif
       for (irow = 0; irow < n; irow++) 
@@ -100,7 +100,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       
       // Multiplying "out"" by cholesky decomposition of covariance and adding the
       // mean to obtain the desired multivariate normal data rvs.
-      #ifdef SUPPORT_OPENMP
+      #ifdef _OPENMP
       #pragma omp for schedule(static)
       #endif
       for(irow = 0; irow < n; irow++)
@@ -119,7 +119,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
        tmp(arma::span(irow), arma::span::all) = work + mu;       
       }
       
-      #ifdef SUPPORT_OPENMP
+      #ifdef _OPENMP
       }
       #endif
       
