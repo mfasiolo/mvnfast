@@ -10,7 +10,7 @@
 #' @param log boolean set to true the logarithm of the pdf is required.
 #' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
 #' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
-#' @return a vector of length n where the i-the entry contains the pdf of the i-th random vector.
+#' @return A vector of length n where the i-the entry contains the pdf of the i-th random vector.
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com> 
 #' @examples
 #' N <- 100

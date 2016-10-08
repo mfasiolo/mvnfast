@@ -58,8 +58,27 @@ microbenchmark(rmvn(N, mu, mcov, ncores = 2),
 
 In this example `rmvn` cuts the computational time, relative to the alternatives, even when a single core is used. This gain is attributable to several factors: the use of C++ code and efficient numerical algorithms to simulate the random variables. Parallelizing the computation on two cores gives another appreciable speed-up. To be fair, it is necessary to point out that `rmvnorm` and `mvrnorm` have many more safety check on the user's input than `rmvn`. This is true also for the functions described in the next sections.
 
-Finally, notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one 
-of the parallel cryptographic RNGs described in (Salmon et al., 2011) and available [here](http://www.sitmo.com/article/parallel-random-number-generator-in-c/). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
+Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one  of the parallel cryptographic RNGs described in (Salmon et al., 2011) and available [here](http://www.sitmo.com). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
+
+When `d` and `N` are large, and `rmvn` is called several times with the same arguments, it would make sense to create the matrix where to store the simulated random variable upfront. This can be done as follows:
+```{r rmvnA}
+A <- matrix(nrow = N, ncol = d)
+class(A) <- "numeric" # This is important. We need the elements of A to be of class "numeric".  
+
+rmvn(N, mu, mcov, A = A) 
+```
+Notice that here `rmvn` returns `NULL`, not the simulated random vectors! These can be found in the matrix provided by the user:
+```{r rmvnA1}
+A[1:2, 1:5]             
+```
+
+Pre-creating the matrix of random variables provide considerable speed ups: 
+```{r rmvnA2}
+microbenchmark(rmvn(N, mu, mcov, ncores = 2, A = A),
+               rmvn(N, mu, mcov, ncores = 2), 
+               times = 200)
+```
+Don't look at the median time here, the mean and the maximum time are much more affected by memory re-allocation. 
 
 Evaluating the multivariate normal density
 ----------------------------

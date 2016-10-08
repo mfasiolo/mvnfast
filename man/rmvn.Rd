@@ -4,7 +4,7 @@
 \alias{rmvn}
 \title{Fast simulations of multivariate normal random variables}
 \usage{
-rmvn(n, mu, sigma, ncores = 1, isChol = FALSE)
+rmvn(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL)
 }
 \arguments{
 \item{n}{number of random vectors to be simulated.}
@@ -17,9 +17,15 @@ of the covariance. In that case \code{isChol} should be set to \code{TRUE}.}
 \item{ncores}{Number of cores used. The parallelization will take place only if OpenMP is supported.}
 
 \item{isChol}{boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.}
+
+\item{A}{an (optional) numeric matrix of dimension (n x d), which will be used to store the output random variables.
+It is useful when n and d are large and one wants to call \code{rmvn()} several times, without reallocating memory
+for the whole matrix each time. NB: the element of \code{A} must be of class "numeric".}
 }
 \value{
-A vector of length n where the i-the entry contains the square mahalanobis distance i-th random vector.
+If \code{A==NULL} (default) the output is an (n x d) matrix where the i-th row is the i-th simulated vector.
+        If \code{A!=NULL} then the random vector are store in \code{A}, which is provided by the user, and the function
+        returns \code{NULL}.
 }
 \description{
 Fast simulations of multivariate normal random variables
@@ -50,6 +56,14 @@ rmvn(4, 1:d, mcov)
 
 set.seed(414)  
 rmvn(4, 1:d, mcov, ncores = 2) # r.v. generated on the second core are different
+
+###### Here we create the matrix that will hold the simulated random variables upfront.
+A <- matrix(NA, 4, d)
+class(A) <- "numeric" # This is important. We need the elements of A to be of class "numeric". 
+
+set.seed(414)
+rmvn(4, 1:d, mcov, ncores = 2, A = A) # This returns NULL ...
+A                                     # ... but the result is here
 
 }
 \author{

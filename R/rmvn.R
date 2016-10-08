@@ -7,7 +7,12 @@
 #'              of the covariance. In that case \code{isChol} should be set to \code{TRUE}.
 #' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
 #' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
-#' @return A vector of length n where the i-the entry contains the square mahalanobis distance i-th random vector.
+#' @param A an (optional) numeric matrix of dimension (n x d), which will be used to store the output random variables.
+#'        It is useful when n and d are large and one wants to call \code{rmvn()} several times, without reallocating memory
+#'        for the whole matrix each time. NB: the element of \code{A} must be of class "numeric".
+#' @return If \code{A==NULL} (default) the output is an (n x d) matrix where the i-th row is the i-th simulated vector.
+#'         If \code{A!=NULL} then the random vector are store in \code{A}, which is provided by the user, and the function
+#'         returns \code{NULL}.
 #' @details Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one 
 #'          of the parallel cryptographic RNGs described in (Salmon et al., 2011). It is important to point out that this
 #'          RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers.
@@ -36,10 +41,19 @@
 #' set.seed(414)  
 #' rmvn(4, 1:d, mcov, ncores = 2) # r.v. generated on the second core are different
 #' 
+#' ###### Here we create the matrix that will hold the simulated random variables upfront.
+#' A <- matrix(NA, 4, d)
+#' class(A) <- "numeric" # This is important. We need the elements of A to be of class "numeric". 
+#' 
+#' set.seed(414)
+#' rmvn(4, 1:d, mcov, ncores = 2, A = A) # This returns NULL ...
+#' A                                     # ... but the result is here
+#' 
 #' @export rmvn
 
-rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE)
+rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL)
 {
+  d <- length(mu)
   
   if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
   
@@ -50,6 +64,18 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE)
     ncores <- 1
     
   }
+  
+  # Create output matrix
+  if( is.null(A) ) {
+    retMat <- TRUE # We return a matrix
+    A <- matrix(nrow = n, ncol = d) 
+    class(A) <- "numeric"
+  } else {
+    retMat <- FALSE # We return NULL
+    if( class(A[1, 1]) != "numeric" ){ 
+      stop("class(A[1, 1]) != \"numeric\", to avoid this do class(A)<-\"numeric\".")
+    }
+  } 
 
   .Call( "rmvnCpp", 
          n_ = n, 
@@ -57,6 +83,14 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE)
          sigma_ = sigma, 
          ncores_ = ncores,
          isChol_ = isChol, 
+         A_ = A,
          PACKAGE = "mvnfast" )
+  
+  # Return a matrix if no storage was provided and NULL if it was provided.
+  if( retMat ) {
+    return( A );
+  } else {
+    return( invisible(NULL) )
+  }
   
 }

@@ -21,7 +21,7 @@ of the covariance. In that case isChol should be set to TRUE.}
 \item{isChol}{boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.}
 }
 \value{
-a vector of length n where the i-the entry contains the pdf of the i-th random vector.
+A vector of length n where the i-the entry contains the pdf of the i-th random vector.
 }
 \description{
 Fast computation of the multivariate normal density.
