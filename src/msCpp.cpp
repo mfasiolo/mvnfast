@@ -57,7 +57,7 @@ RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol
       do{
         
         oldPos = currPos; 
-        weights = dmvnInt(X, oldPos, cholDec, false, ncores);
+        weights = dmvtInt(X, oldPos, cholDec, false, -1.0, ncores);
         currPos = arma::conv_to<arma::vec>::from( weights.t() * X / sum(weights) ); 
     
         if(store) traj.push_back( as< std::vector<double> >( wrap(currPos) ) );

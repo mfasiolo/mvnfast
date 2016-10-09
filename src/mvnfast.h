@@ -3,6 +3,7 @@
 
 #include <RcppArmadillo.h>
 #include <boost/random/normal_distribution.hpp>
+#include <boost/random/chi_squared_distribution.hpp>
 #include "sitmo/sitmo.hpp"
 
 #ifdef _OPENMP
@@ -23,6 +24,6 @@
  
 arma::vec mahaInt(arma::mat & X, arma::vec & mu, arma::mat & sigma, unsigned int ncores, bool isChol);
 
-arma::vec dmvnInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, unsigned int ncores);
+arma::vec dmvtInt( arma::mat X, arma::vec mu, arma::mat cholDec, bool log, double df, unsigned int ncores);
 
 #endif

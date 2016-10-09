@@ -39,4 +39,6 @@ test_that("Checking dmvn() and maha() against dmvnorm() and mahalanobis", {
     message(paste("Test", ii, "passed."))
   }
   
+  detach("package:mvtnorm", unload=TRUE)
+  
 })

@@ -1,7 +1,7 @@
 
 <!--
 %\VignetteEngine{knitr::docco_linear}
-%\VignetteIndexEntry{synlik_vignette}
+%\VignetteIndexEntry{mvnfast_vignette}
 -->
   
 An Introduction to **mvnfast**
@@ -16,24 +16,26 @@ opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="cente
 Introduction
 ------------
   
-The `mvn` R package provides computationally efficient tools related to the multivariate normal distribution. 
+The `mvn` R package provides computationally efficient tools related to the multivariate normal and Student's t distributions. 
 The tools are generally faster than those provided by other packages, thanks to the use of C++ code through the 
 `Rcpp`\\`RcppArmadillo` packages and parallelization through the `OpenMP` API. The most important functions are:
 
 - `rmvn()`: simulates multivariate normal random vectors.
+- `rmvt()`: simulates Student's t normal random vectors.
 - `dmvn()`: evaluates the probability density function of a multivariate normal distribution.  
+- `dmvt()`: evaluates the probability density function of a multivariate Student's t distribution.  
 - `maha()`: evaluates mahalanobis distances.
 
 In the following sections we will benchmark each function against equivalent functions provided by other packages, while in the final section we provide an example application.
 
 
-Simulating multivariate normal random vectors
+Simulating multivariate normal or Student's t random vectors
 ----------------------------
   
 Simulating multivariate normal random variables is an essential step in many Monte Carlo algorithms (such as MCMC or Particle Filters),
  hence this operations has to be as fast as possible. Here we compare the `rmvn` function with the equivalent function `rmvnorm` 
 (from the `mvtnorm` package) and `mvrnorm` (from the `MASS` package). In particular, we simulate $10^4$ twenty-dimensional random vectors:
-```{r rmvn}
+```{r pack, message=F, warning=F}
 library("microbenchmark")
 library("mvtnorm")
 library("mvnfast")
@@ -41,7 +43,8 @@ library("MASS")
 # We might also need to turn off BLAS parallelism 
 library("RhpcBLASctl")
 blas_set_num_threads(1)
-
+```
+```{r rmvn}
 N <- 10000
 d <- 20
 
@@ -60,7 +63,15 @@ In this example `rmvn` cuts the computational time, relative to the alternatives
 
 Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one  of the parallel cryptographic RNGs described in (Salmon et al., 2011) and available [here](http://www.sitmo.com). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
 
-When `d` and `N` are large, and `rmvn` is called several times with the same arguments, it would make sense to create the matrix where to store the simulated random variable upfront. This can be done as follows:
+We get similar performance gains when we simulate multivariate Student's t random variables:
+```{r rmvt}
+# Here we have a conflict between namespaces
+microbenchmark(mvnfast::rmvt(N, mu, mcov, df = 3, ncores = 2),
+               mvnfast::rmvt(N, mu, mcov, df = 3),
+               mvtnorm::rmvt(N, delta = mu, sigma = mcov, df = 3))
+```
+
+When `d` and `N` are large, and `rmvn` or `rmvt` are called several times with the same arguments, it would make sense to create the matrix where to store the simulated random variable upfront. This can be done as follows:
 ```{r rmvnA}
 A <- matrix(nrow = N, ncol = d)
 class(A) <- "numeric" # This is important. We need the elements of A to be of class "numeric".  
@@ -72,19 +83,19 @@ Notice that here `rmvn` returns `NULL`, not the simulated random vectors! These 
 A[1:2, 1:5]             
 ```
 
-Pre-creating the matrix of random variables provide considerable speed ups: 
+Pre-creating the matrix of random variables saves some more time: 
 ```{r rmvnA2}
 microbenchmark(rmvn(N, mu, mcov, ncores = 2, A = A),
                rmvn(N, mu, mcov, ncores = 2), 
                times = 200)
 ```
-Don't look at the median time here, the mean and the maximum time are much more affected by memory re-allocation. 
+Don't look at the median time here, the mean is much more affected by memory re-allocation. 
 
-Evaluating the multivariate normal density
+Evaluating the multivariate normal and Student's t densities
 ----------------------------
 
 Here we compare the `dmvn` function, which evaluates the multivariate normal density,  with the equivalent function `dmvtnorm` (from the `mvtnorm` package). 
-In particular we evaluate the density of $10^4$ twenty-dimensional random vectors:
+In particular we evaluate the log-density of $10^4$ twenty-dimensional random vectors:
 ```{r dmvn}
 # Generating random vectors 
 N <- 10000
@@ -94,11 +105,17 @@ tmp <- matrix(rnorm(d^2), d, d)
 mcov <- tcrossprod(tmp, tmp)
 X <- rmvn(N, mu, mcov)
 
-microbenchmark(dmvn(X, mu, mcov, ncores = 2),
-               dmvn(X, mu, mcov),
-               dmvnorm(X, mu, mcov))
+microbenchmark(dmvn(X, mu, mcov, ncores = 2, log = T),
+               dmvn(X, mu, mcov, log = T),
+               dmvnorm(X, mu, mcov, log = T), times = 500)
 ```
-Again, we get some speed-up using C++ code and some more from the parallelization.
+Again, we get some speed-up using C++ code and some more from the parallelization. We get similar results if we use a multivariate Student's t density:
+```{r dmvt}
+# We have a namespace conflict
+microbenchmark(mvnfast::dmvt(X, mu, mcov, df = 4, ncores = 2, log = T),
+               mvnfast::dmvt(X, mu, mcov, df = 4, log = T),
+               mvtnorm::dmvt(X, delta = mu, sigma = mcov, df = 4, log = T), times = 500)
+```
 
 Evaluating the Mahalanobis distance
 ----------------------------

@@ -29,7 +29,8 @@ RcppExport SEXP rmvnCpp(SEXP n_,
                         SEXP mu_,  
                         SEXP sigma_,
                         SEXP ncores_,
-                        SEXP isChol_) 
+                        SEXP isChol_, 
+                        SEXP A_) 
 { 
     using namespace Rcpp;
     
@@ -40,6 +41,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       arma::mat sigma = as<arma::mat>(sigma_); 
       unsigned int  ncores = as<unsigned int>(ncores_); 
       bool isChol = as<bool>(isChol_); 
+      NumericMatrix A = NumericMatrix(A_);
       
       unsigned int d = mu.n_elem;
       
@@ -47,12 +49,13 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       if(ncores < 0) stop("ncores has to be positive");
       if(d != sigma.n_cols) stop("mu.n_elem != sigma.n_cols");
       if(d != sigma.n_rows) stop("mu.n_elem != sigma.n_rows");
+      if(d != A.ncol()) stop("mu.n_elem != A.ncol()");
+      if(n != A.nrow()) stop("n != A.nrow()");
       
-      // This "out" the matrix that will be filled with firstly with standard normal rvs,
+      // The A matrix that will be filled with firstly with standard normal rvs,
       // and finally with multivariate normal rvs.
-      // We wrap into a arma::mat "tmp" without making a copy.
-      NumericMatrix out(n, d);
-      arma::mat tmp( out.begin(), out.nrow(), out.ncol(), false );
+      // We A wrap into a arma::mat "tmp" without making a copy.
+      arma::mat tmp( A.begin(), A.nrow(), A.ncol(), false );
       
       RNGScope scope; // Declare RNGScope after the output in order to avoid a known Rcpp bug.
     
@@ -96,7 +99,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       #endif
       for (irow = 0; irow < n; irow++) 
         for (icol = 0; icol < d; icol++) 
-           out(irow, icol) = normal(engine);
+           A(irow, icol) = normal(engine);
       
       // Multiplying "out"" by cholesky decomposition of covariance and adding the
       // mean to obtain the desired multivariate normal data rvs.
@@ -123,7 +126,7 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       }
       #endif
       
-      return out;
+      return R_NilValue;
             
     } catch( std::exception& __ex__){
       forward_exception_to_r(__ex__);

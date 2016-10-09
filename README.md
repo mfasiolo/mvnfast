@@ -1,1 +1,1 @@
-Fast methods for multivariate normal distributions. For details type vignette("mvnfast").
+Fast methods for multivariate normal and Student's t distributions. For details type vignette("mvnfast").
