@@ -11,9 +11,10 @@
 #' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
 #' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
 #' @return A vector of length n where the i-the entry contains the pdf of the i-th random vector.
-#' @param sigma scale matrix (d x d). Alternatively it can be the cholesky decomposition
-#'              of the scale matrix. In that case isChol should be set to TRUE. Notice that ff the degrees of 
-#'              freedom (the argument \code{df}) is larger than 2, the \code{Cov(X)=sigma*df/(df-2)}.
+#' @details There are in fact many candidates for the multivariate generalization of Student's t-distribution, here we use
+#'          the parametrization described here \url{https://en.wikipedia.org/wiki/Multivariate_t-distribution}. NB: at the moment 
+#'          the parallelization does not work properly on Solaris OS when \code{ncores>1}. Hence, \code{dmvt()} checks if the OS 
+#'          is Solaris and, if this the case, it imposes \code{ncores==1}. 
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com> 
 #' @examples
 #' N <- 100
@@ -37,6 +38,14 @@ dmvt <- function(X, mu, sigma, df, log = FALSE, ncores = 1, isChol = FALSE){
   if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
   
   if(df <= 0.0) stop("df must be positive.")
+  
+  if( ncores > 1 && grepl('SunOS', Sys.info()['sysname']) ){
+    
+    message("dmvt() cannot be used on multiple cores under Solaris. I am resetting \"ncores\" to 1.")
+    
+    ncores <- 1
+    
+  }
   
   .Call( "dmvtCpp", 
          X_ = X, 

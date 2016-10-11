@@ -22,16 +22,18 @@ freedom (the argument \code{df}) is larger than 2, the \code{Cov(X)=sigma*df/(df
 \item{ncores}{Number of cores used. The parallelization will take place only if OpenMP is supported.}
 
 \item{isChol}{boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.}
-
-\item{sigma}{scale matrix (d x d). Alternatively it can be the cholesky decomposition
-of the scale matrix. In that case isChol should be set to TRUE. Notice that ff the degrees of 
-freedom (the argument \code{df}) is larger than 2, the \code{Cov(X)=sigma*df/(df-2)}.}
 }
 \value{
 A vector of length n where the i-the entry contains the pdf of the i-th random vector.
 }
 \description{
 Fast computation of the multivariate Student's t density.
+}
+\details{
+There are in fact many candidates for the multivariate generalization of Student's t-distribution, here we use
+         the parametrization described here \url{https://en.wikipedia.org/wiki/Multivariate_t-distribution}. NB: at the moment 
+         the parallelization does not work properly on Solaris OS when \code{ncores>1}. Hence, \code{dmvt()} checks if the OS 
+         is Solaris and, if this the case, it imposes \code{ncores==1}.
 }
 \examples{
 N <- 100

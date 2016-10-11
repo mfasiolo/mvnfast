@@ -1,6 +1,8 @@
 #ifndef _MVNFAST_H
 #define _MVNFAST_H
 
+#define BOOST_DISABLE_ASSERTS true
+
 #include <RcppArmadillo.h>
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/chi_squared_distribution.hpp>

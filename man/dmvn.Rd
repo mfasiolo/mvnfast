@@ -55,9 +55,10 @@ a[ , 2] / a[, 3]
 microbenchmark(dmvn(X, mu, myChol, isChol = TRUE), 
                dmvn(X, mu, mcov), 
                dmvnorm(X, mu, mcov))
+               
+detach("package:mvtnorm", unload=TRUE)
 }
 
-detach("package:mvtnorm", unload=TRUE)
 }
 \author{
 Matteo Fasiolo <matteo.fasiolo@gmail.com>

@@ -3,9 +3,6 @@ context("dmvt()")
 test_that("Checking dmvt() against mvtnorm::dmvt()", {
   library("mvtnorm")
   
-  ##########
-  ###### d = 1, n = 1 case
-  ##########
   N <- c(1, 100, 1, 100)
   d <- c(1, 1,   10, 10) 
   df = 4

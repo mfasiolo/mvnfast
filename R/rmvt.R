@@ -18,13 +18,13 @@
 #' @details There are in fact many candidates for the multivariate generalization of Student's t-distribution, here we use
 #'          the parametrization described here \url{https://en.wikipedia.org/wiki/Multivariate_t-distribution}.
 #' 
-#'          Notice that \code{rmvn()} does not use one of the Random Number Generators (RNGs) provided by R, but one 
+#'          Notice that \code{rmvt()} does not use one of the Random Number Generators (RNGs) provided by R, but one 
 #'          of the parallel cryptographic RNGs described in (Salmon et al., 2011). It is important to point out that this
 #'          RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers.
 #'          The initialization of the RNG depends on R's seed, hence the \code{set.seed()} function can be used to 
 #'          obtain reproducible results. Notice though that changing \code{ncores} causes most of the generated numbers
 #'          to be different even if R's seed is the same (see example below). NB: at the moment the RNG does not work
-#'          properly on Solaris OS when \code{ncores>1}. Hence, \code{rmvn()} checks if the OS is Solaris and, if this the case, 
+#'          properly on Solaris OS when \code{ncores>1}. Hence, \code{rmvt()} checks if the OS is Solaris and, if this the case, 
 #'          it imposes \code{ncores==1}. 
 #' @author Matteo Fasiolo <matteo.fasiolo@@gmail.com>, C++ RNG engine by Thijs van den Berg <http://sitmo.com/>.
 #' @references  John K. Salmon, Mark A. Moraes, Ron O. Dror, and David E. Shaw (2011). Parallel Random Numbers: As Easy as 1, 2, 3.

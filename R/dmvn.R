@@ -41,9 +41,10 @@
 #' microbenchmark(dmvn(X, mu, myChol, isChol = TRUE), 
 #'                dmvn(X, mu, mcov), 
 #'                dmvnorm(X, mu, mcov))
+#'                
+#' detach("package:mvtnorm", unload=TRUE)
 #' }
 #' 
-#' detach("package:mvtnorm", unload=TRUE)
 #' @export dmvn
 
 dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE){
