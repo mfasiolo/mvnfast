@@ -163,7 +163,10 @@ xvals <- seq(min(X[ , 1]), max(X[ , 1]), length.out = np)
 yvals <- seq(min(X[ , 2]), max(X[ , 2]), length.out = np)
 theGrid <- expand.grid(xvals, yvals) 
 theGrid <- as.matrix(theGrid)
-dens <- 0.5 * dmvn(theGrid, mu1, Cov1) + 0.5 * dmvn(theGrid, mu2, Cov2)
+dens <- dmixn(theGrid, 
+              mu = rbind(mu1, mu2), 
+              sigma = list(Cov1, Cov2), 
+              w = rep(1, 2)/2)
 plot(X[ , 1], X[ , 2], pch = '.', lwd = 0.01, col = 3)
 contour(x = xvals, y = yvals, z = matrix(dens, np, np),
         levels = c(0.002, 0.01, 0.02, 0.04, 0.08, 0.15 ), add = TRUE, lwd = 2)
