@@ -30,7 +30,7 @@ A vector of length n where the i-the entry contains the pdf of the i-th random v
 Fast computation of the multivariate Student's t density.
 }
 \details{
-There are in fact many candidates for the multivariate generalization of Student's t-distribution, here we use
+There are many candidates for the multivariate generalization of Student's t-distribution, here we use
          the parametrization described here \url{https://en.wikipedia.org/wiki/Multivariate_t-distribution}. NB: at the moment 
          the parallelization does not work properly on Solaris OS when \code{ncores>1}. Hence, \code{dmvt()} checks if the OS 
          is Solaris and, if this the case, it imposes \code{ncores==1}.
