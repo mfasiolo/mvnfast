@@ -56,7 +56,7 @@ There are many candidates for the multivariate generalization of Student's t-dis
 \examples{
 # Create mixture of two components
 df <- 6
-mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = T)
+mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
 sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 w <- c(0.1, 0.9)
 
@@ -75,7 +75,7 @@ set.seed(414)
 rmixt(4, mu, sigma, df, w, ncores = 2) # r.v. generated on the second core are different
 
 ###### Here we create the matrix that will hold the simulated random variables upfront.
-A <- matrix(NA, 4, d)
+A <- matrix(NA, 4, 2)
 class(A) <- "numeric" # This is important. We need the elements of A to be of class "numeric". 
 
 set.seed(414)
@@ -83,11 +83,10 @@ rmixt(4, mu, sigma, df, w, ncores = 2, A = A) # This returns NULL ...
 A                                             # ... but the result is here
 
 }
-\author{
-Matteo Fasiolo <matteo.fasiolo@gmail.com>, C++ RNG engine by Thijs van den Berg <http://sitmo.com/>.
-}
 \references{
 John K. Salmon, Mark A. Moraes, Ron O. Dror, and David E. Shaw (2011). Parallel Random Numbers: As Easy as 1, 2, 3.
              D. E. Shaw Research, New York, NY 10036, USA.
 }
-
+\author{
+Matteo Fasiolo <matteo.fasiolo@gmail.com>, C++ RNG engine by Thijs van den Berg <http://sitmo.com/>.
+}

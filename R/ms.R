@@ -65,8 +65,7 @@ ms <- function(X, init, H, tol = 1e-6, ncores = 1, store = FALSE)
                 cholDec_ = cholDec, 
                 ncores_ = ncores,
                 tol_ = tol, 
-                store_ = store,
-                PACKAGE = "mvnfast" )
+                store_ = store )
   
   list("final" = drop(tmp$final), "traj" = do.call("rbind", tmp$traj))
 }

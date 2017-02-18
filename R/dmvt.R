@@ -56,6 +56,5 @@ dmvt <- function(X, mu, sigma, df, log = FALSE, ncores = 1, isChol = FALSE){
          df_ = df,
          log_ = log, 
          ncores_ = ncores,
-         isChol_ = isChol, 
-         PACKAGE = "mvnfast" )
+         isChol_ = isChol)
 }

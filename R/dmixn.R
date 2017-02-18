@@ -7,6 +7,7 @@
 #'              Alternatively it can be a list of m cholesky decomposition of the covariance. 
 #'              In that case \code{isChol} should be set to \code{TRUE}.
 #' @param w vector of length m, containing the weights of the mixture components.
+#' @param log boolean set to true the logarithm of the pdf is required.
 #' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
 #' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
 #' @param A an (optional) numeric matrix of dimension (m x d), which will be used to store the evaluations of each mixture
@@ -20,7 +21,7 @@
 #' @examples
 #' #### 1) Example use
 #' # Set up mixture density
-#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = T)
+#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
 #' sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 #' w <- c(0.1, 0.9)
 #' 
@@ -37,12 +38,11 @@
 #' N <- 10000
 #' d <- 2
 #' w <- rep(1, 2) / 2
-#' mu <- matrix(rep(c(0, 0, 2, 3), 2), 2, 2, byrow = T) 
+#' mu <- matrix(rep(c(0, 0, 2, 3), 2), 2, 2, byrow = TRUE) 
 #' sigma <- list(matrix(c(1, 0, 0, 2), 2, 2), matrix(c(1, -0.9, -0.9, 1), 2, 2)) 
 #' 
 #' # Simulate random variables
 #' X <- rmixn(N, mu, sigma, w = w, retInd = TRUE)
-#' plot(X, pch = '.', col = attr(X, "index"))
 #' 
 #' # Plot mixture density
 #' np <- 100

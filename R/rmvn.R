@@ -83,8 +83,7 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL)
          sigma_ = sigma, 
          ncores_ = ncores,
          isChol_ = isChol, 
-         A_ = A,
-         PACKAGE = "mvnfast" )
+         A_ = A )
   
   # Return a matrix if no storage was provided and NULL if it was provided.
   if( retMat ) {

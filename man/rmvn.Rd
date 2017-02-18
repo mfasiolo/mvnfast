@@ -66,11 +66,10 @@ rmvn(4, 1:d, mcov, ncores = 2, A = A) # This returns NULL ...
 A                                     # ... but the result is here
 
 }
-\author{
-Matteo Fasiolo <matteo.fasiolo@gmail.com>, C++ RNG engine by Thijs van den Berg <http://sitmo.com/>.
-}
 \references{
 John K. Salmon, Mark A. Moraes, Ron O. Dror, and David E. Shaw (2011). Parallel Random Numbers: As Easy as 1, 2, 3.
              D. E. Shaw Research, New York, NY 10036, USA.
 }
-
+\author{
+Matteo Fasiolo <matteo.fasiolo@gmail.com>, C++ RNG engine by Thijs van den Berg <http://sitmo.com/>.
+}

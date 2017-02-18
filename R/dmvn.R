@@ -60,6 +60,5 @@ dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE){
          df = -1.0,
          log_ = log, 
          ncores_ = ncores,
-         isChol_ = isChol, 
-         PACKAGE = "mvnfast" )
+         isChol_ = isChol )
 }

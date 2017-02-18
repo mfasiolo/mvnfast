@@ -37,7 +37,7 @@
 #' @examples
 #' # Create mixture of two components
 #' df <- 6
-#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = T)
+#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
 #' sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 #' w <- c(0.1, 0.9)
 #' 
@@ -56,7 +56,7 @@
 #' rmixt(4, mu, sigma, df, w, ncores = 2) # r.v. generated on the second core are different
 #' 
 #' ###### Here we create the matrix that will hold the simulated random variables upfront.
-#' A <- matrix(NA, 4, d)
+#' A <- matrix(NA, 4, 2)
 #' class(A) <- "numeric" # This is important. We need the elements of A to be of class "numeric". 
 #' 
 #' set.seed(414)
@@ -104,8 +104,7 @@ rmixt <- function(n, mu, sigma, df, w, ncores = 1, isChol = FALSE, retInd = FALS
          ncores_ = ncores,
          isChol_ = isChol, 
          retInd_ = retInd,
-         A_ = A,
-         PACKAGE = "mvnfast" )
+         A_ = A )
   
   # Return a matrix if no storage was provided and NULL if it was provided.
   if( retMat ) {

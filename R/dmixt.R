@@ -8,6 +8,7 @@
 #'              In that case \code{isChol} should be set to \code{TRUE}.
 #' @param df a positive scalar representing the degrees of freedom. All the densities in the mixture have the same \code{df}.
 #' @param w vector of length m, containing the weights of the mixture components.
+#' @param log boolean set to true the logarithm of the pdf is required.
 #' @param ncores Number of cores used. The parallelization will take place only if OpenMP is supported.
 #' @param isChol boolean set to true is \code{sigma} is the cholesky decomposition of the covariance matrix.
 #' @param A an (optional) numeric matrix of dimension (m x d), which will be used to store the evaluations of each mixture
@@ -24,7 +25,7 @@
 #' #### 1) Example use
 #' # Set up mixture density
 #' df <- 6
-#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = T)
+#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
 #' sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 #' w <- c(0.1, 0.9)
 #' 
@@ -42,12 +43,11 @@
 #' d <- 2
 #' df = 10
 #' w <- rep(1, 2) / 2
-#' mu <- matrix(rep(c(0, 0, 2, 3), 2), 2, 2, byrow = T) 
+#' mu <- matrix(rep(c(0, 0, 2, 3), 2), 2, 2, byrow = TRUE) 
 #' sigma <- list(matrix(c(1, 0, 0, 2), 2, 2), matrix(c(1, -0.9, -0.9, 1), 2, 2)) 
 #' 
 #' # Simulate random variables
 #' X <- rmixt(N, mu, sigma, w = w, df = df, retInd = TRUE)
-#' plot(X, pch = '.', col = attr(X, "index"))
 #' 
 #' # Plot mixture density
 #' np <- 100
@@ -101,8 +101,7 @@ dmixt <- function(X, mu, sigma, df, w, log = FALSE, ncores = 1, isChol = FALSE, 
                log_ = log,
                ncores_ = ncores,
                isChol_ = isChol, 
-               A_ = A,
-               PACKAGE = "mvnfast" )
+               A_ = A )
   
   return( out )
   
