@@ -14,6 +14,9 @@
 #' @param A an (optional) numeric matrix of dimension (n x d), which will be used to store the output random variables.
 #'        It is useful when n and d are large and one wants to call \code{rmvn()} several times, without reallocating memory
 #'        for the whole matrix each time. NB: the element of \code{A} must be of class "numeric".
+#' @param kpnames if \code{TRUE} the dimensions' names are preserved. That is, the i-th column of the output
+#'                has the same name as the i-th entry of \code{mu} or the i-th column of \code{sigma}. 
+#'                \code{kpnames==FALSE} by default.
 #' @return If \code{A==NULL} (default) the output is an (n x d) matrix where the i-th row is the i-th simulated vector.
 #'         If \code{A!=NULL} then the random vector are store in \code{A}, which is provided by the user, and the function
 #'         returns \code{NULL}. Notice that if \code{retInd==TRUE} an attribute called "index" will be added to A.
@@ -59,7 +62,7 @@
 #' 
 #' @export rmixn
 #'
-rmixn <- function(n, mu, sigma, w, ncores = 1, isChol = FALSE, retInd = FALSE, A = NULL)
+rmixn <- function(n, mu, sigma, w, ncores = 1, isChol = FALSE, retInd = FALSE, A = NULL, kpnames = FALSE)
 {
   d <- ncol(mu)
   m <- length(w)
@@ -98,6 +101,12 @@ rmixn <- function(n, mu, sigma, w, ncores = 1, isChol = FALSE, retInd = FALSE, A
          isChol_ = isChol, 
          retInd_ = retInd,
          A_ = A )
+  
+  if( kpnames ) # (Optionally add dimensions names)
+  {
+    if( is.null(nam <- dimnames(mu)[[2L]]) ){ nam <- dimnames(sigma[[1L]])[[1L]] }
+    if( !is.null(nam) ){ dimnames(A) <- list(NULL, nam) }
+  }
   
   # Return a matrix if no storage was provided and NULL if it was provided.
   if( retMat ) {

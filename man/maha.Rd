@@ -58,4 +58,3 @@ microbenchmark(maha(X, mu, mcov),
 \author{
 Matteo Fasiolo <matteo.fasiolo@gmail.com>
 }
-

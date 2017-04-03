@@ -64,4 +64,3 @@ for(ii in 1:nrep) {
 \author{
 Matteo Fasiolo <matteo.fasiolo@gmail.com>.
 }
-

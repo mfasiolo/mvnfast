@@ -4,7 +4,8 @@
 \alias{rmvt}
 \title{Fast simulation of multivariate Student's t random variables}
 \usage{
-rmvt(n, mu, sigma, df, ncores = 1, isChol = FALSE, A = NULL)
+rmvt(n, mu, sigma, df, ncores = 1, isChol = FALSE, A = NULL,
+  kpnames = FALSE)
 }
 \arguments{
 \item{n}{number of random vectors to be simulated.}
@@ -24,6 +25,10 @@ freedom (the argument \code{df}) is larger than 2, the \code{Cov(X)=sigma*df/(df
 \item{A}{an (optional) numeric matrix of dimension (n x d), which will be used to store the output random variables.
 It is useful when n and d are large and one wants to call \code{rmvn()} several times, without reallocating memory
 for the whole matrix each time. NB: the element of \code{A} must be of class "numeric".}
+
+\item{kpnames}{if \code{TRUE} the dimensions' names are preserved. That is, the i-th column of the output
+has the same name as the i-th entry of \code{mu} or the i-th column of \code{sigma}. 
+\code{kpnames==FALSE} by default.}
 }
 \value{
 If \code{A==NULL} (default) the output is an (n x d) matrix where the i-th row is the i-th simulated vector.

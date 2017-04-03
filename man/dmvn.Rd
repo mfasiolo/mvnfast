@@ -63,4 +63,3 @@ detach("package:mvtnorm", unload=TRUE)
 \author{
 Matteo Fasiolo <matteo.fasiolo@gmail.com>
 }
-

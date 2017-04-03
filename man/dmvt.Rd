@@ -52,4 +52,3 @@ head(dmvt(X, mu, myChol, df = df, isChol = TRUE), 10)
 \author{
 Matteo Fasiolo <matteo.fasiolo@gmail.com>
 }
-
