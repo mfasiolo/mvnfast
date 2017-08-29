@@ -2,9 +2,10 @@ context("rmvt()")
 
 test_that("Checking rmvt()", {
   
+  set.seed(78970)
   N <- c(1e6, 1e6, 1e6)
   d <- c(1, 2, 3) 
-  df <- 4
+  df <- 20
   
   message("Testing rmvt()")
   for(ii in 1:length(N))
@@ -47,9 +48,10 @@ test_that("Checking rmvt()", {
 
 test_that("Checking rmvt() with pre-allocated storage", {
   
+  set.seed(41244)
   N <- c(1e4, 1e4, 1e4)
   d <- c(1, 2, 3) 
-  df <- 4
+  df <- 20
   
   message("Testing rmvn()")
   for(ii in 1:length(N))
@@ -61,7 +63,6 @@ test_that("Checking rmvt() with pre-allocated storage", {
     myChol <- chol(mcov)
     A <- matrix(NA, N[ii], d[ii])
     class(A) <- "numeric"
-    
     
     ####### Sequential
     # Using covariance

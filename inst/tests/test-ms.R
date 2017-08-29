@@ -6,6 +6,7 @@ test_that("Checking ms()", {
   ###### d = 1 case
   ##########  
   
+  set.seed(7617)
   mu <- 1
   sigma <- 1
   N <- 10000

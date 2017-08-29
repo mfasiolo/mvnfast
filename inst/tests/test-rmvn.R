@@ -2,6 +2,7 @@ context("rmvn()")
 
 test_that("Checking rmvn()", {
   
+  set.seed(6899)
   N <- c(1e6, 1e6, 1e6)
   d <- c(1, 2, 3) 
   
@@ -45,6 +46,7 @@ test_that("Checking rmvn()", {
 
 test_that("Checking rmvn() with pre-allocated storage", {
   
+  set.seed(6899)
   N <- c(1e4, 1e4, 1e4)
   d <- c(1, 2, 3) 
   
@@ -59,7 +61,6 @@ test_that("Checking rmvn() with pre-allocated storage", {
     A <- matrix(NA, N[ii], d[ii])
     class(A) <- "numeric"
     
-
     ####### Sequential
     # Using covariance
     set.seed(5151)

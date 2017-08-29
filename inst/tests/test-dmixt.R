@@ -17,6 +17,7 @@ test_that("Checking dmixt()", {
     return(out)
   }
   
+  set.seed(4141)
   N <- c(1e4, 1e4, 1e4)
   d <- c(1, 2, 3) 
   df = 5

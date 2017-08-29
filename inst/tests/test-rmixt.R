@@ -2,9 +2,10 @@ context("rmixt()")
 
 test_that("Checking rmixt()", {
   
+  set.seed(689968)
   N <- c(1e6, 1e6, 1e6)
   d <- c(1, 2, 3) 
-  df <- 5
+  df <- 20
   
   message("Testing rmixt()")
   for(nMix in 1:3)
@@ -68,9 +69,10 @@ test_that("Checking rmixt()", {
 
 test_that("Checking rmixt() with pre-allocated storage", {
   
+  set.seed(689968)
   N <- c(1e6, 1e6, 1e6)
   d <- c(1, 2, 3) 
-  df <- 5
+  df <- 20
   
   message("Testing rmixt() with pre-allocated storage")
   for(nMix in 1:3)

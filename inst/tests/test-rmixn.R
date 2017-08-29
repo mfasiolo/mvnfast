@@ -2,9 +2,9 @@ context("rmixn()")
 
 test_that("Checking rmixn()", {
   
+  set.seed(689968)
   N <- c(1e6, 1e6, 1e6)
   d <- c(1, 2, 3) 
-  
   
   message("Testing rmixn()")
   for(nMix in 1:3)
@@ -68,6 +68,7 @@ test_that("Checking rmixn()", {
 
 test_that("Checking rmixn() with pre-allocated storage", {
   
+  set.seed(689968)
   N <- c(1e6, 1e6, 1e6)
   d <- c(1, 2, 3) 
   

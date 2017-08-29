@@ -3,6 +3,7 @@ context("dmvt()")
 test_that("Checking dmvt() against mvtnorm::dmvt()", {
   library("mvtnorm")
   
+  set.seed(666)
   N <- c(1, 100, 1, 100)
   d <- c(1, 1,   10, 10) 
   df = 4

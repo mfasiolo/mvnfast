@@ -6,6 +6,7 @@ test_that("Checking dmvn() and maha() against dmvnorm() and mahalanobis", {
   ##########
   ###### d = 1, n = 1 case
   ##########
+  set.seed(4616)
   N <- c(1, 100, 1, 100)
   d <- c(1, 1,   10, 10) 
   
