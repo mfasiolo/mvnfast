@@ -22,7 +22,7 @@ test_that("Checking ms()", {
   
   # Parallel
   out2 <- ms(X, init = start, H = 0.1 * sigma, ncores = 2, store = TRUE)
-  expect_identical(out1, out2)
+  expect_equal(out1, out2)
   
   ##########
   ###### d = 2 case
@@ -43,7 +43,7 @@ test_that("Checking ms()", {
   
   # Parallel
   out2 <- ms(X, init = start, H = 0.1 * sigma, ncores = 2, store = TRUE)
-  expect_identical(out1, out2)
+  expect_equal(out1, out2)
 
 })
 
