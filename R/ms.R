@@ -6,8 +6,7 @@
 #' @description Given a sample from a d-dimensional distribution, an initialization point and a bandwidth
 #'              the algorithm finds the nearest mode of the corresponding Gaussian kernel density.
 #' @param X n by d matrix containing the data.
-#' @param init d-dimensional vector containing the initial point for the optimization. By default
-#'             it is equal to \code{colMeans(X)}.
+#' @param init d-dimensional vector containing the initial point for the optimization.
 #' @param H Positive definite bandwidth matrix representing the covariance of each component of the Gaussian kernel density.
 #' @param tol Tolerance used to assess the convergence of the algorithm, which is stopped if the absolute values
 #'            of increments along all the dimensions are smaller then tol at any iteration. Default value is 1e-6.
@@ -51,6 +50,8 @@
 
 ms <- function(X, init, H, tol = 1e-6, ncores = 1, store = FALSE)
 {
+  if( !is.numeric(init) ) init <- as.numeric(init)
+  
   if( is.matrix(X) == FALSE ) X <- matrix(X, length(X), 1)
   
   if( !is.matrix(H) ) H <- diag(H, ncol(X))

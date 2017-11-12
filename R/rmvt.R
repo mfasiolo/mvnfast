@@ -64,6 +64,8 @@ rmvt <- function(n, mu, sigma, df, ncores = 1, isChol = FALSE, A = NULL, kpnames
 {
   d <- length(mu)
   
+  if( !is.numeric(mu) ) mu <- as.numeric(mu)
+  
   if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
   
   if( ncores > 1 && grepl('SunOS', Sys.info()['sysname']) ){

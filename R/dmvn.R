@@ -49,6 +49,8 @@
 
 dmvn <- function(X, mu, sigma, log = FALSE, ncores = 1, isChol = FALSE){
   
+  if( !is.numeric(mu) ) mu <- as.numeric(mu)
+  
   if( !is.matrix(X) ) X <- matrix(X, 1, length(X))
   
   if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )

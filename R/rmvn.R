@@ -58,6 +58,8 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL, kpnames = F
 {
   d <- length(mu)
   
+  if( !is.numeric(mu) ) mu <- as.numeric(mu)
+  
   if( !is.matrix(sigma) ) sigma <- as.matrix( sigma )
   
   if( ncores > 1 && grepl('SunOS', Sys.info()['sysname']) ){
