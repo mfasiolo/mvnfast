@@ -1,11 +1,13 @@
 
-<!--
-%\VignetteEngine{knitr::docco_linear}
-%\VignetteIndexEntry{mvnfast_vignette}
--->
-  
-An Introduction to **mvnfast**
-=======================================
+---
+title: "An Introduction to mvnfast"
+author: "Matteo Fasiolo"
+date: "`r Sys.Date()`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{mvnfast_vignette}
+  %\VignetteEncoding{UTF-8}
+---
   
 ```{r setup, include=FALSE}
 library(knitr)
@@ -16,7 +18,7 @@ opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="cente
 Introduction
 ------------
   
-The `mvn` R package provides computationally efficient tools related to the multivariate normal and Student's t distributions. 
+The `mvnfast` R package provides computationally efficient tools related to the multivariate normal and Student's t distributions. 
 The tools are generally faster than those provided by other packages, thanks to the use of C++ code through the 
 `Rcpp`\\`RcppArmadillo` packages and parallelization through the `OpenMP` API. The most important functions are:
 

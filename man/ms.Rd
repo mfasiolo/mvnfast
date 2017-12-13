@@ -9,8 +9,7 @@ ms(X, init, H, tol = 1e-06, ncores = 1, store = FALSE)
 \arguments{
 \item{X}{n by d matrix containing the data.}
 
-\item{init}{d-dimensional vector containing the initial point for the optimization. By default
-it is equal to \code{colMeans(X)}.}
+\item{init}{d-dimensional vector containing the initial point for the optimization.}
 
 \item{H}{Positive definite bandwidth matrix representing the covariance of each component of the Gaussian kernel density.}
 
