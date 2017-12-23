@@ -51,7 +51,7 @@ RcppExport SEXP rmixnCpp(SEXP n_,
     unsigned int m = mu.n_rows; // Number of mixture components
     
     if(n < 1) stop("n should be a positive integer");
-    if(ncores < 0) stop("ncores has to be positive");
+    if(ncores == 0) stop("ncores has to be positive");
     if(d != A.ncol()) stop("mu.n_cols != A.ncol()");
     if(n != A.nrow()) stop("n != A.nrow()");
     if(mu.n_rows != m) stop("mu.n_rows != m");

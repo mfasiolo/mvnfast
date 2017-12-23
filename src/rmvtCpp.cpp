@@ -48,7 +48,7 @@ RcppExport SEXP rmvtCpp(SEXP n_,
     unsigned int d = mu.n_elem;
     
     if(n < 1) stop("n should be a positive integer");
-    if(ncores < 0) stop("ncores has to be positive");
+    if(ncores == 0) stop("ncores has to be positive");
     if(df < 0.0) stop("df must be positive.");
     if(d != sigma.n_cols) stop("mu.n_elem != sigma.n_cols");
     if(d != sigma.n_rows) stop("mu.n_elem != sigma.n_rows");

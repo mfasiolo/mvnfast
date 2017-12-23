@@ -58,7 +58,7 @@ RcppExport SEXP dmixtCpp(SEXP X_,
     uint32_t m = mu.n_rows; // Number of mixture components
     uint32_t n = X.n_rows; // Number of samples
     
-    if(ncores < 0) stop("ncores has to be positive");
+    if(ncores == 0) stop("ncores has to be positive");
     if(mu.n_rows != m) stop("mu.n_rows != m");
     if(w.n_elem != m) stop("w.n_elem != m");
     if( X.n_cols != d ) Rcpp::stop("X.n_cols != d"); 

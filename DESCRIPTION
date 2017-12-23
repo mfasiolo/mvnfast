@@ -1,8 +1,8 @@
 Package: mvnfast
 Type: Package
 Title: Fast Multivariate Normal and Student's t Methods
-Version: 0.2.3
-Date: 2017-11-16
+Version: 0.2.4
+Date: 2017-12-23
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
              person("Thijs", " van den Berg", role = c("ctb")))
 Maintainer: Matteo Fasiolo <matteo.fasiolo@gmail.com>

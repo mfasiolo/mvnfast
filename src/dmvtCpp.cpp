@@ -47,7 +47,7 @@ USA. */
     unsigned int  ncores = as<unsigned int>(ncores_); 
     bool isChol = as<bool>(isChol_);
     
-    if(ncores < 0) stop("ncores has to be positive.");
+    if(ncores == 0) stop("ncores has to be positive.");
     if( X.n_cols != mu.n_elem ) Rcpp::stop("X.n_cols != mu.n_elem"); 
     if( X.n_cols != sigma.n_cols ) Rcpp::stop("X.n_cols != sigma.n_cols"); 
     if( sigma.n_rows != sigma.n_cols ) Rcpp::stop("sigma.n_rows != sigma.n_cols"); 
