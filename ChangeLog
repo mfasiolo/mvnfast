@@ -1,0 +1,11 @@
+**  denotes quite substantial/important changes
+*** denotes really big changes 
+
+0.2.4
+
+* Removed useless checks 
+
+0.2.3 
+
+** Now parallelization via OpenMP is available also on windows.
+

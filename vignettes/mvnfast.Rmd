@@ -8,12 +8,11 @@ vignette: >
   %\VignetteIndexEntry{mvnfast_vignette}
   %\VignetteEncoding{UTF-8}
 ---
-  
+
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)
 ```
-
 
 Introduction
 ------------
@@ -38,15 +37,25 @@ Simulating multivariate normal random variables is an essential step in many Mon
  hence this operations has to be as fast as possible. Here we compare the `rmvn` function with the equivalent function `rmvnorm` 
 (from the `mvtnorm` package) and `mvrnorm` (from the `MASS` package). In particular, we simulate $10^4$ twenty-dimensional random vectors:
 ```{r pack, message=F, warning=F}
-library("microbenchmark")
+# microbenchmark does not work on all platforms, hence we need this small wrapper 
+microwrapper <- function(..., times = 100L){
+  ok <- "microbenchmark" %in% rownames(installed.packages())
+  if( ok ){ 
+    library("microbenchmark") 
+    microbenchmark(list = match.call(expand.dots = FALSE)$..., times = times)
+  }else{
+    message("microbenchmark package is not installed")
+    return( invisible(NULL) )
+  }
+}
+
 library("mvtnorm")
 library("mvnfast")
 library("MASS")
 # We might also need to turn off BLAS parallelism 
 library("RhpcBLASctl")
 blas_set_num_threads(1)
-```
-```{r rmvn}
+
 N <- 10000
 d <- 20
 
@@ -55,10 +64,10 @@ mu <- 1:d
 tmp <- matrix(rnorm(d^2), d, d)
 mcov <- tcrossprod(tmp, tmp)
 
-microbenchmark(rmvn(N, mu, mcov, ncores = 2),
-               rmvn(N, mu, mcov),
-               rmvnorm(N, mu, mcov),
-               mvrnorm(N, mu, mcov))
+microwrapper(rmvn(N, mu, mcov, ncores = 2),
+             rmvn(N, mu, mcov),
+             rmvnorm(N, mu, mcov),
+             mvrnorm(N, mu, mcov))
 ```
 
 In this example `rmvn` cuts the computational time, relative to the alternatives, even when a single core is used. This gain is attributable to several factors: the use of C++ code and efficient numerical algorithms to simulate the random variables. Parallelizing the computation on two cores gives another appreciable speed-up. To be fair, it is necessary to point out that `rmvnorm` and `mvrnorm` have many more safety check on the user's input than `rmvn`. This is true also for the functions described in the next sections.
@@ -68,9 +77,9 @@ Notice that this function does not use one of the Random Number Generators (RNGs
 We get similar performance gains when we simulate multivariate Student's t random variables:
 ```{r rmvt}
 # Here we have a conflict between namespaces
-microbenchmark(mvnfast::rmvt(N, mu, mcov, df = 3, ncores = 2),
-               mvnfast::rmvt(N, mu, mcov, df = 3),
-               mvtnorm::rmvt(N, delta = mu, sigma = mcov, df = 3))
+microwrapper(mvnfast::rmvt(N, mu, mcov, df = 3, ncores = 2),
+             mvnfast::rmvt(N, mu, mcov, df = 3),
+             mvtnorm::rmvt(N, delta = mu, sigma = mcov, df = 3))
 ```
 
 When `d` and `N` are large, and `rmvn` or `rmvt` are called several times with the same arguments, it would make sense to create the matrix where to store the simulated random variable upfront. This can be done as follows:
@@ -87,9 +96,9 @@ A[1:2, 1:5]
 
 Pre-creating the matrix of random variables saves some more time: 
 ```{r rmvnA2}
-microbenchmark(rmvn(N, mu, mcov, ncores = 2, A = A),
-               rmvn(N, mu, mcov, ncores = 2), 
-               times = 200)
+microwrapper(rmvn(N, mu, mcov, ncores = 2, A = A),
+             rmvn(N, mu, mcov, ncores = 2), 
+             times = 200)
 ```
 Don't look at the median time here, the mean is much more affected by memory re-allocation. 
 
@@ -107,16 +116,16 @@ tmp <- matrix(rnorm(d^2), d, d)
 mcov <- tcrossprod(tmp, tmp)
 X <- rmvn(N, mu, mcov)
 
-microbenchmark(dmvn(X, mu, mcov, ncores = 2, log = T),
-               dmvn(X, mu, mcov, log = T),
-               dmvnorm(X, mu, mcov, log = T), times = 500)
+microwrapper(dmvn(X, mu, mcov, ncores = 2, log = T),
+             dmvn(X, mu, mcov, log = T),
+             dmvnorm(X, mu, mcov, log = T), times = 500)
 ```
 Again, we get some speed-up using C++ code and some more from the parallelization. We get similar results if we use a multivariate Student's t density:
 ```{r dmvt}
 # We have a namespace conflict
-microbenchmark(mvnfast::dmvt(X, mu, mcov, df = 4, ncores = 2, log = T),
-               mvnfast::dmvt(X, mu, mcov, df = 4, log = T),
-               mvtnorm::dmvt(X, delta = mu, sigma = mcov, df = 4, log = T), times = 500)
+microwrapper(mvnfast::dmvt(X, mu, mcov, df = 4, ncores = 2, log = T),
+             mvnfast::dmvt(X, mu, mcov, df = 4, log = T),
+             mvtnorm::dmvt(X, delta = mu, sigma = mcov, df = 4, log = T), times = 500)
 ```
 
 Evaluating the Mahalanobis distance
@@ -133,9 +142,9 @@ tmp <- matrix(rnorm(d^2), d, d)
 mcov <- tcrossprod(tmp, tmp)
 X <- rmvn(N, mu, mcov)
 
-microbenchmark(maha(X, mu, mcov, ncores = 2),
-               maha(X, mu, mcov),
-               mahalanobis(X, mu, mcov))
+microwrapper(maha(X, mu, mcov, ncores = 2),
+             maha(X, mu, mcov),
+             mahalanobis(X, mu, mcov))
 ```
 The acceleration is similar to that obtained in the previous sections.
 

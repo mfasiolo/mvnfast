@@ -25,7 +25,9 @@
 #' head(dmvn(X, mu, myChol, isChol = TRUE), 10)
 #' 
 #' \dontrun{
-#' # Performance comparison
+#' # Performance comparison: microbenchmark does not work on all
+#' # platforms, hence we need to check whether it is installed
+#' if( "microbenchmark" %in% rownames(installed.packages()) ){
 #' library(mvtnorm)
 #' library(microbenchmark)
 #' 
@@ -43,6 +45,7 @@
 #'                dmvnorm(X, mu, mcov))
 #'                
 #' detach("package:mvtnorm", unload=TRUE)
+#' }
 #' }
 #' 
 #' @export dmvn

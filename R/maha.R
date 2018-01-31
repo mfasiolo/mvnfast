@@ -25,7 +25,9 @@
 #'       head(mahalanobis(X, mu, mcov), 10))
 #' 
 #' \dontrun{
-#' # Performance comparison
+#' # Performance comparison: microbenchmark does not work on all
+#' # platforms, hence we need to check whether it is installed
+#' if( "microbenchmark" %in% rownames(installed.packages()) ){
 #' library(microbenchmark)
 #' 
 #' a <- cbind(
@@ -40,6 +42,7 @@
 #' microbenchmark(maha(X, mu, mcov),
 #'                maha(X, mu, myChol, isChol = TRUE),
 #'                mahalanobis(X, mu, mcov))
+#' }
 #' }
 #' @export maha
 
