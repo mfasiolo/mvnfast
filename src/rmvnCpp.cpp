@@ -72,7 +72,14 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       // which are the seeds. I put the first one in "coreSeed". If there is no support for OpenMP only this seed
       // will be used, as the computations will be sequential. If there is support for OpenMP, "coreSeed" will
       // be over-written, so that each core will get its own seed.
-      NumericVector seeds = runif(ncores, 1.0, std::numeric_limits<uint32_t>::max());
+      //NumericVector seeds = runif(ncores, 1.0, std::numeric_limits<uint32_t>::max());
+      
+      NumericVector seeds(ncores);
+      seeds[0] = runif(1, 1.0, std::numeric_limits<uint32_t>::max())[0];
+      for (unsigned int j = 0;  j < ncores - 1; j++){
+        seeds[j+1] = seeds[j] - 1.0;
+        if (seeds[j+1] < 1.0) seeds[j] = std::numeric_limits<uint32_t>::max() - 1.0;
+      }
       
       #ifdef _OPENMP
       #pragma omp parallel num_threads(ncores) if(ncores > 1)

@@ -1,6 +1,9 @@
 **  denotes quite substantial/important changes
 *** denotes really big changes 
 
+0.2.6
+* Changed random seeds generation to avoid collisions (two or more cores with the same seed).
+
 0.2.4
 
 * Removed useless checks 
