@@ -40,7 +40,7 @@
 #' @examples
 #' # Create mixture of two components
 #' df <- 6
-#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
+#' mu <- matrix(c(1, 2, 10, 20), 2, 2, byrow = TRUE)
 #' sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 #' w <- c(0.1, 0.9)
 #' 

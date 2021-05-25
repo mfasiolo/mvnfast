@@ -4,8 +4,17 @@
 \alias{rmixn}
 \title{Fast simulation of r.v.s from a mixture of multivariate normal densities}
 \usage{
-rmixn(n, mu, sigma, w, ncores = 1, isChol = FALSE, retInd = FALSE,
-  A = NULL, kpnames = FALSE)
+rmixn(
+  n,
+  mu,
+  sigma,
+  w,
+  ncores = 1,
+  isChol = FALSE,
+  retInd = FALSE,
+  A = NULL,
+  kpnames = FALSE
+)
 }
 \arguments{
 \item{n}{number of random vectors to be simulated.}
@@ -54,7 +63,7 @@ Notice that this function does not use one of the Random Number Generators (RNGs
 }
 \examples{
 # Create mixture of two components
-mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
+mu <- matrix(c(1, 2, 10, 20), 2, 2, byrow = TRUE)
 sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 w <- c(0.1, 0.9)
 

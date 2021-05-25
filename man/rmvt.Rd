@@ -4,8 +4,7 @@
 \alias{rmvt}
 \title{Fast simulation of multivariate Student's t random variables}
 \usage{
-rmvt(n, mu, sigma, df, ncores = 1, isChol = FALSE, A = NULL,
-  kpnames = FALSE)
+rmvt(n, mu, sigma, df, ncores = 1, isChol = FALSE, A = NULL, kpnames = FALSE)
 }
 \arguments{
 \item{n}{number of random vectors to be simulated.}

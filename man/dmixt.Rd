@@ -4,8 +4,7 @@
 \alias{dmixt}
 \title{Fast density computation for mixture of multivariate Student's t distributions.}
 \usage{
-dmixt(X, mu, sigma, df, w, log = FALSE, ncores = 1, isChol = FALSE,
-  A = NULL)
+dmixt(X, mu, sigma, df, w, log = FALSE, ncores = 1, isChol = FALSE, A = NULL)
 }
 \arguments{
 \item{X}{matrix n by d where each row is a d dimensional random vector. Alternatively \code{X} can be a d-dimensional vector.}
@@ -47,7 +46,7 @@ There are many candidates for the multivariate generalization of Student's t-dis
 #### 1) Example use
 # Set up mixture density
 df <- 6
-mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
+mu <- matrix(c(1, 2, 10, 20), 2, 2, byrow = TRUE)
 sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 w <- c(0.1, 0.9)
 
@@ -65,7 +64,7 @@ N <- 10000
 d <- 2
 df = 10
 w <- rep(1, 2) / 2
-mu <- matrix(rep(c(0, 0, 2, 3), 2), 2, 2, byrow = TRUE) 
+mu <- matrix(c(0, 0, 2, 3), 2, 2, byrow = TRUE) 
 sigma <- list(matrix(c(1, 0, 0, 2), 2, 2), matrix(c(1, -0.9, -0.9, 1), 2, 2)) 
 
 # Simulate random variables

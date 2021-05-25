@@ -4,8 +4,18 @@
 \alias{rmixt}
 \title{Fast simulation of r.v.s from a mixture of multivariate Student's t densities}
 \usage{
-rmixt(n, mu, sigma, df, w, ncores = 1, isChol = FALSE, retInd = FALSE,
-  A = NULL, kpnames = FALSE)
+rmixt(
+  n,
+  mu,
+  sigma,
+  df,
+  w,
+  ncores = 1,
+  isChol = FALSE,
+  retInd = FALSE,
+  A = NULL,
+  kpnames = FALSE
+)
 }
 \arguments{
 \item{n}{number of random vectors to be simulated.}
@@ -60,7 +70,7 @@ There are many candidates for the multivariate generalization of Student's t-dis
 \examples{
 # Create mixture of two components
 df <- 6
-mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
+mu <- matrix(c(1, 2, 10, 20), 2, 2, byrow = TRUE)
 sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 w <- c(0.1, 0.9)
 

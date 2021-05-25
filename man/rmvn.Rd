@@ -4,8 +4,7 @@
 \alias{rmvn}
 \title{Fast simulation of multivariate normal random variables}
 \usage{
-rmvn(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL,
-  kpnames = FALSE)
+rmvn(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL, kpnames = FALSE)
 }
 \arguments{
 \item{n}{number of random vectors to be simulated.}

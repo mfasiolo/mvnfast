@@ -72,7 +72,7 @@ microwrapper(rmvn(N, mu, mcov, ncores = 2),
 
 In this example `rmvn` cuts the computational time, relative to the alternatives, even when a single core is used. This gain is attributable to several factors: the use of C++ code and efficient numerical algorithms to simulate the random variables. Parallelizing the computation on two cores gives another appreciable speed-up. To be fair, it is necessary to point out that `rmvnorm` and `mvrnorm` have many more safety check on the user's input than `rmvn`. This is true also for the functions described in the next sections.
 
-Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one  of the parallel cryptographic RNGs described in (Salmon et al., 2011) and available [here](http://www.sitmo.com). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
+Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one  of the parallel cryptographic RNGs described in (Salmon et al., 2011) and available [here](https://www.sitmo.com/). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
 
 We get similar performance gains when we simulate multivariate Student's t random variables:
 ```{r rmvt}
@@ -131,7 +131,7 @@ microwrapper(mvnfast::dmvt(X, mu, mcov, df = 4, ncores = 2, log = T),
 Evaluating the Mahalanobis distance
 ----------------------------
 
-Finally, we compare the `maha` function, which evaluates the square [mahalanobis distance](http://en.wikipedia.org/wiki/Mahalanobis_distance) with the equivalent function `mahalanobis` (from the `stats` package). 
+Finally, we compare the `maha` function, which evaluates the square [mahalanobis distance](https://en.wikipedia.org/wiki/Mahalanobis_distance) with the equivalent function `mahalanobis` (from the `stats` package). 
 Also in the case we use $10^4$ twenty-dimensional random vectors:
 ```{r maha}
 # Generating random vectors 
@@ -151,7 +151,7 @@ The acceleration is similar to that obtained in the previous sections.
 Example: mean-shift mode seeking algorithm
 ----------------------------
 
-As an example application of the `dmvn` function, we implemented the [mean-shift mode seeking](http://en.wikipedia.org/wiki/Mean-shift) algorithm.
+As an example application of the `dmvn` function, we implemented the [mean-shift mode seeking](https://en.wikipedia.org/wiki/Mean-shift) algorithm.
 This procedure can be used to find the mode or maxima of a kernel density function, and it can be used to set up
 clustering algorithms. Here we simulate $10^4$ d-dimensional random vectors from mixture of normal distributions: 
 ```{r mixSim}
@@ -208,14 +208,14 @@ References
 ----------------------------
   
   * Dirk Eddelbuettel and Romain Francois (2011). Rcpp: Seamless R and C++ Integration. Journal of Statistical Software, 40(8),
-  1-18. URL http://www.jstatsoft.org/v40/i08/.
+  1-18. URL https://www.jstatsoft.org/v40/i08/.
   
   * Eddelbuettel, Dirk (2013) Seamless R and C++ Integration with Rcpp. Springer, New York. ISBN 978-1-4614-6867-7.
   
   *  Dirk Eddelbuettel, Conrad Sanderson (2014). RcppArmadillo: Accelerating R with high-performance C++ linear algebra. Computational
-  Statistics and Data Analysis, Volume 71, March 2014, pages 1054-1063. URL http://dx.doi.org/10.1016/j.csda.2013.02.005
+  Statistics and Data Analysis, Volume 71, March 2014, pages 1054-1063. URL https://dx.doi.org/10.1016/j.csda.2013.02.005
 
-  * http://openmp.org/
+  * https://www.openmp.org/
   
   * John K. Salmon, Mark A. Moraes, Ron O. Dror, and David E. Shaw (2011). Parallel Random Numbers: As Easy as 1, 2, 3.
     D. E. Shaw Research, New York, NY 10036, USA.

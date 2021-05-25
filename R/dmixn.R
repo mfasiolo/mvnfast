@@ -21,7 +21,7 @@
 #' @examples
 #' #### 1) Example use
 #' # Set up mixture density
-#' mu <- matrix(rep(c(1, 2, 10, 20), 2), 2, 2, byrow = TRUE)
+#' mu <- matrix(c(1, 2, 10, 20), 2, 2, byrow = TRUE)
 #' sigma <- list(diag(c(1, 10)), matrix(c(1, -0.9, -0.9, 1), 2, 2))
 #' w <- c(0.1, 0.9)
 #' 
@@ -38,7 +38,7 @@
 #' N <- 10000
 #' d <- 2
 #' w <- rep(1, 2) / 2
-#' mu <- matrix(rep(c(0, 0, 2, 3), 2), 2, 2, byrow = TRUE) 
+#' mu <- matrix(c(0, 0, 2, 3), 2, 2, byrow = TRUE) 
 #' sigma <- list(matrix(c(1, 0, 0, 2), 2, 2), matrix(c(1, -0.9, -0.9, 1), 2, 2)) 
 #' 
 #' # Simulate random variables
