@@ -52,6 +52,10 @@ USA. */
     if( X.n_cols != sigma.n_cols ) Rcpp::stop("X.n_cols != sigma.n_cols"); 
     if( sigma.n_rows != sigma.n_cols ) Rcpp::stop("sigma.n_rows != sigma.n_cols"); 
     
+    #ifdef _OPENMP
+    omp_set_num_threads(ncores);
+    #endif
+    
     // Calculate cholesky dec. unless sigma is alread a cholesky dec.
     arma::mat cholDec;
     if( isChol == false ) {

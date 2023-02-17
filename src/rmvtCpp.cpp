@@ -55,6 +55,10 @@ RcppExport SEXP rmvtCpp(SEXP n_,
     if(d != A.ncol()) stop("mu.n_elem != A.ncol()");
     if(n != A.nrow()) stop("n != A.nrow()");
     
+    #ifdef _OPENMP
+     omp_set_num_threads(ncores);
+    #endif
+    
     // The A matrix that will be filled with firstly with standard normal rvs,
     // and finally with multivariate normal rvs.
     // We A wrap into a arma::mat "tmp" without making a copy.

@@ -57,6 +57,10 @@ RcppExport SEXP rmixnCpp(SEXP n_,
     if(mu.n_rows != m) stop("mu.n_rows != m");
     if(indV.length()!= n) stop("indV.length()!= n");
     
+    #ifdef _OPENMP
+     omp_set_num_threads(ncores);
+    #endif
+    
     // Get list of Cholesky decompositions of covariance matrices
     arma::mat tmpMat;
     std::vector< arma::mat > cholDec;

@@ -39,6 +39,10 @@ RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
       arma::mat sigma_ = as<arma::mat>(sigma); 
       unsigned int ncores_ = as<unsigned int>(ncores);
       bool isChol_ = as<bool>(isChol);
+      
+      #ifdef _OPENMP
+      omp_set_num_threads(ncores_);
+      #endif
         
       NumericVector dist = wrap( mahaInt(X_, mu_, sigma_, ncores_, isChol_) );
       dist.attr( "dim" ) = R_NilValue;

@@ -47,6 +47,10 @@ RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol
       if( d != cholDec.n_cols ) stop( "The ncol(X) has to equal to cholDec.n_cols" );
       if( d != cholDec.n_rows ) stop( "The ncol(X) has to equal to cholDec.n_rows" );
       
+      #ifdef _OPENMP
+      omp_set_num_threads(ncores);
+      #endif
+      
       arma::vec currPos = init; 
       arma::vec oldPos(d);
       arma::vec weights(n);
