@@ -60,9 +60,17 @@ RcppExport SEXP rmixtCpp(SEXP n_,
     if(mu.n_rows != m) stop("mu.n_rows != m");
     if(indV.length()!= n) stop("indV.length()!= n");
     
-    #ifdef _OPENMP
-     omp_set_num_threads(ncores);
-    #endif
+    // Here we set the number of OMP threads, but before we save the original
+    // number of threads, so we can re-set before returning.
+    int ncores_0;
+#ifdef _OPENMP
+#pragma omp parallel num_threads(1)
+{
+#pragma omp single
+  ncores_0 = omp_get_num_threads();
+}
+omp_set_num_threads(ncores);
+#endif
     
     // Get list of Cholesky decompositions of covariance matrices
     arma::mat tmpMat;
@@ -160,6 +168,10 @@ RcppExport SEXP rmixtCpp(SEXP n_,
 
 // (Optionally) Add mixture indexes as attributes
 if( retInd ){ A.attr("index") = indV+1; }
+
+#ifdef _OPENMP
+omp_set_num_threads(ncores_0);
+#endif
 
 return R_NilValue;
 

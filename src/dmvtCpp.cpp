@@ -52,7 +52,15 @@ USA. */
     if( X.n_cols != sigma.n_cols ) Rcpp::stop("X.n_cols != sigma.n_cols"); 
     if( sigma.n_rows != sigma.n_cols ) Rcpp::stop("sigma.n_rows != sigma.n_cols"); 
     
+    // Here we set the number of OMP threads, but before we save the original
+    // number of threads, so we can re-set before returning.
+    int ncores_0;
     #ifdef _OPENMP
+    #pragma omp parallel num_threads(1)
+    {
+    #pragma omp single
+     ncores_0 = omp_get_num_threads();
+    }
     omp_set_num_threads(ncores);
     #endif
     
@@ -68,6 +76,10 @@ USA. */
     // Dropping the dimensionality of the output vector
     Rcpp::NumericVector Rout = Rcpp::wrap( dmvtInt( X, mu, cholDec, log, df, ncores) );
     Rout.attr( "dim" ) = R_NilValue;
+    
+    #ifdef _OPENMP
+    omp_set_num_threads(ncores_0);
+    #endif
     
     return Rout;
     

@@ -77,7 +77,7 @@ rmvn <- function(n, mu, sigma, ncores = 1, isChol = FALSE, A = NULL, kpnames = F
     class(A) <- "numeric"
   } else {
     retMat <- FALSE # We return NULL
-    if( class(A[1, 1]) != "numeric" ){ 
+    if( !inherits(A[1, 1], "numeric") ){ 
       stop("class(A[1, 1]) != \"numeric\", to avoid this do class(A)<-\"numeric\".")
     }
   } 

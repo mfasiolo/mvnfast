@@ -52,9 +52,17 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       if(d != A.ncol()) stop("mu.n_elem != A.ncol()");
       if(n != A.nrow()) stop("n != A.nrow()");
       
-      #ifdef _OPENMP
-       omp_set_num_threads(ncores);
-      #endif
+      // Here we set the number of OMP threads, but before we save the original
+      // number of threads, so we can re-set before returning.
+      int ncores_0;
+#ifdef _OPENMP
+#pragma omp parallel num_threads(1)
+{
+#pragma omp single
+  ncores_0 = omp_get_num_threads();
+}
+omp_set_num_threads(ncores);
+#endif
       
       // The A matrix that will be filled with firstly with standard normal rvs,
       // and finally with multivariate normal rvs.
@@ -136,6 +144,10 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       #ifdef _OPENMP
       }
       #endif
+      
+#ifdef _OPENMP
+      omp_set_num_threads(ncores_0);
+#endif
       
       return R_NilValue;
             

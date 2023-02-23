@@ -72,7 +72,7 @@ microwrapper(rmvn(N, mu, mcov, ncores = 2),
 
 In this example `rmvn` cuts the computational time, relative to the alternatives, even when a single core is used. This gain is attributable to several factors: the use of C++ code and efficient numerical algorithms to simulate the random variables. Parallelizing the computation on two cores gives another appreciable speed-up. To be fair, it is necessary to point out that `rmvnorm` and `mvrnorm` have many more safety check on the user's input than `rmvn`. This is true also for the functions described in the next sections.
 
-Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one  of the parallel cryptographic RNGs described in (Salmon et al., 2011) and available [here](https://www.sitmo.com/). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
+Notice that this function does not use one of the Random Number Generators (RNGs) provided by R, but one  of the parallel cryptographic RNGs described in (Salmon et al., 2011). It is important to point out that this RNG can safely be used in parallel, without risk of collisions between parallel sequence of random numbers, as detailed in the above reference.
 
 We get similar performance gains when we simulate multivariate Student's t random variables:
 ```{r rmvt}

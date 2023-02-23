@@ -40,12 +40,24 @@ RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
       unsigned int ncores_ = as<unsigned int>(ncores);
       bool isChol_ = as<bool>(isChol);
       
+      // Here we set the number of OMP threads, but before we save the original
+      // number of threads, so we can re-set before returning.
+      int ncores_0_;
       #ifdef _OPENMP
+      #pragma omp parallel num_threads(1)
+      {
+      #pragma omp single
+       ncores_0_ = omp_get_num_threads();
+      }
       omp_set_num_threads(ncores_);
       #endif
         
       NumericVector dist = wrap( mahaInt(X_, mu_, sigma_, ncores_, isChol_) );
       dist.attr( "dim" ) = R_NilValue;
+      
+      #ifdef _OPENMP
+       omp_set_num_threads(ncores_0_);
+      #endif
       
       return dist;
       

@@ -87,7 +87,7 @@ dmixt <- function(X, mu, sigma, df, w, log = FALSE, ncores = 1, isChol = FALSE, 
     A <- matrix(nrow = n, ncol = m) 
     class(A) <- "numeric"
   } else {
-    if( class(A[1, 1]) != "numeric" ){ 
+    if( !inherits(A[1, 1], "numeric") ){ 
       stop("class(A[1, 1]) != \"numeric\", to avoid this do class(A)<-\"numeric\".")
     }
   } 

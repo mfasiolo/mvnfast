@@ -65,7 +65,15 @@ RcppExport SEXP dmixtCpp(SEXP X_,
     if( A.nrow() != n ) Rcpp::stop("A.nrow() != n");
     if( A.ncol() != m ) Rcpp::stop("A.ncol() != m");
     
+    // Here we set the number of OMP threads, but before we save the original
+    // number of threads, so we can re-set before returning.
+    int ncores_0;
     #ifdef _OPENMP
+    #pragma omp parallel num_threads(1)
+    {
+     #pragma omp single
+      ncores_0 = omp_get_num_threads();
+    }
     omp_set_num_threads(ncores);
     #endif
     
@@ -112,6 +120,10 @@ RcppExport SEXP dmixtCpp(SEXP X_,
     // Dropping the dimensionality of the output vector
     Rcpp::NumericVector Rout = Rcpp::wrap( out );
     Rout.attr( "dim" ) = R_NilValue;
+    
+    #ifdef _OPENMP
+     omp_set_num_threads(ncores_0);
+    #endif
     
     return Rout;
     
