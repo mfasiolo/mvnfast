@@ -26,4 +26,4 @@ Suggests:
     RhpcBLASctl
 LinkingTo: Rcpp, RcppArmadillo, BH
 VignetteBuilder: knitr
-RoxygenNote: 7.2.2
+RoxygenNote: 7.3.3

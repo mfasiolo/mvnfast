@@ -2,6 +2,23 @@ context("dmvn() and maha()")
 
 test_that("Checking dmvn() and maha() against dmvnorm() and mahalanobis", {
   library("mvtnorm")
+  library("RhpcBLASctl")
+  
+  ###########
+  # We might also need to turn off BLAS parallelism 
+  ncores_original <- omp_get_max_threads()
+  
+  N <- 100
+  d <- 20
+  
+  # Creating mean and covariance matrix
+  mu <- 1:d
+  tmp <- matrix(rnorm(d^2), d, d)
+  mcov <- tcrossprod(tmp, tmp)
+  
+  a <- rmvn(N, mu, mcov, ncores = 2)
+  
+  expect(omp_get_max_threads() == ncores_original, "Did not restore number of OMP cores")
   
   ##########
   ###### d = 1, n = 1 case

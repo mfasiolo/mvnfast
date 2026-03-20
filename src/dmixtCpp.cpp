@@ -1,33 +1,33 @@
 /* 
  Copyright (C) 2014 Matteo Fasiolo  matteo.fasiolo@gmail.com
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-(www.gnu.org/copyleft/gpl.html)
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
-USA. */
+ 
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ (www.gnu.org/copyleft/gpl.html)
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
+ USA. */
 
 #include "mvnfast.h"
 
 /*
-* Fast computation of pdf of a multivariate normal distribution
-*
-* See ?dmixt() for a description of the arguments and output.
-*/
+ * Fast computation of pdf of a multivariate normal distribution
+ *
+ * See ?dmixt() for a description of the arguments and output.
+ */
 
 /*
-* Interface to R
-*/
+ * Interface to R
+ */
 RcppExport SEXP dmixtCpp(SEXP X_,  
                          SEXP mu_,  
                          SEXP sigma_, 
@@ -67,14 +67,9 @@ RcppExport SEXP dmixtCpp(SEXP X_,
     
     // Here we set the number of OMP threads, but before we save the original
     // number of threads, so we can re-set before returning.
-    int ncores_0;
     #ifdef _OPENMP
-    #pragma omp parallel num_threads(1)
-    {
-     #pragma omp single
-      ncores_0 = omp_get_num_threads();
-    }
-    omp_set_num_threads(ncores);
+     int ncores_0 = omp_get_max_threads();
+     omp_set_num_threads(ncores);
     #endif
     
     // Get list of Cholesky decompositions of covariance matrices
