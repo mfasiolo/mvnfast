@@ -47,14 +47,13 @@ RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol
       if( d != cholDec.n_cols ) stop( "The ncol(X) has to equal to cholDec.n_cols" );
       if( d != cholDec.n_rows ) stop( "The ncol(X) has to equal to cholDec.n_rows" );
       
-      // Here we set the number of OMP threads, but before we save the original
-      // number of threads, so we can re-set before returning.
-      int ncores_0;
       #ifdef _OPENMP
       #pragma omp parallel num_threads(1)
       {
        #pragma omp single
-       ncores_0 = omp_get_num_threads();
+       // Here we set the number of OMP threads, but before we save the original
+       // number of threads, so we can re-set before returning.
+       int ncores_0 = omp_get_num_threads();
       }
       omp_set_num_threads(ncores);
       #endif
