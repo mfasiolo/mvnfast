@@ -64,7 +64,7 @@ RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
     } catch( std::exception& __ex__){
       forward_exception_to_r(__ex__);
     } catch(...){
-      ::Rf_error( "c++ exception (unknown reason)" );
+      Rcpp::stop( "c++ exception (unknown reason)" );
     }
     return wrap(NA_REAL);
 }
