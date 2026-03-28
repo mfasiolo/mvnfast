@@ -30,10 +30,9 @@ USA. */
  */
 RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
 {
+    BEGIN_RCPP
     using namespace Rcpp;
     
-    try{
-      
       arma::mat X_ = as<arma::mat>(X);
       arma::vec mu_ = as<arma::vec>(mu);  
       arma::mat sigma_ = as<arma::mat>(sigma); 
@@ -56,12 +55,7 @@ RcppExport SEXP mahaCpp(SEXP X, SEXP mu, SEXP sigma, SEXP ncores, SEXP isChol)
       
       return dist;
       
-    } catch( std::exception& __ex__){
-      forward_exception_to_r(__ex__);
-    } catch(...){
-      Rcpp::stop( "c++ exception (unknown reason)" );
-    }
-    return wrap(NA_REAL);
+    END_RCPP
 }
   
 

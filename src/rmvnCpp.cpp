@@ -32,10 +32,9 @@ RcppExport SEXP rmvnCpp(SEXP n_,
                         SEXP isChol_, 
                         SEXP A_) 
 { 
+    BEGIN_RCPP
     using namespace Rcpp;
     
-    try{
-      
       uint32_t n = as<uint32_t>(n_);
       arma::rowvec mu = as<arma::rowvec>(mu_);  
       arma::mat sigma = as<arma::mat>(sigma_); 
@@ -146,10 +145,5 @@ RcppExport SEXP rmvnCpp(SEXP n_,
       
       return R_NilValue;
             
-    } catch( std::exception& __ex__){
-      forward_exception_to_r(__ex__);
-    } catch(...){
-      Rcpp::stop( "c++ exception (unknown reason)" );
-    }
-    return wrap(NA_REAL);
+    END_RCPP
 }

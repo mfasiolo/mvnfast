@@ -28,10 +28,9 @@ USA. */
 
 RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol_, SEXP store_)
 {
+    BEGIN_RCPP
     using namespace Rcpp;
     
-    try{
-      
       arma::vec init = as<arma::vec>(init_);
       arma::mat X = as<arma::mat>(X_); 
       arma::mat cholDec = as<arma::mat>(cholDec_); 
@@ -78,10 +77,5 @@ RcppExport SEXP msCpp(SEXP init_, SEXP X_, SEXP cholDec_, SEXP ncores_, SEXP tol
             
       return List::create( _["final"] = wrap( currPos ), _["traj"] = wrap( traj ) );
       
-    } catch( std::exception& __ex__){
-      forward_exception_to_r(__ex__);
-    } catch(...){
-      Rcpp::stop( "c++ exception (unknown reason)" );
-    }
-    return wrap(NA_REAL);
+    END_RCPP
 }

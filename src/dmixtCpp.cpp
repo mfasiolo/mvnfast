@@ -38,9 +38,9 @@ RcppExport SEXP dmixtCpp(SEXP X_,
                          SEXP isChol_, 
                          SEXP A_) 
 { 
+  BEGIN_RCPP
   using namespace Rcpp;
   
-  try{
     arma::mat X = as<arma::mat>(X_);
     arma::mat mu = as<arma::mat>(mu_);  
     List sigma = List(sigma_);
@@ -122,11 +122,6 @@ RcppExport SEXP dmixtCpp(SEXP X_,
     
     return Rout;
     
-  } catch( std::exception& __ex__){
-    forward_exception_to_r(__ex__);
-  } catch(...){
-    Rcpp::stop( "c++ exception (unknown reason)" );
-  }
-  return wrap(NA_REAL);
+  END_RCPP
 }
 
