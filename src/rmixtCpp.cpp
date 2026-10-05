@@ -35,10 +35,9 @@ RcppExport SEXP rmixtCpp(SEXP n_,
                          SEXP retInd_,
                          SEXP A_)  
 { 
+  BEGIN_RCPP
   using namespace Rcpp;
   
-  try{
-    
     uint32_t n = as<uint32_t>(n_);
     arma::mat mu = as<arma::mat>(mu_);  
     List sigma = List(sigma_);
@@ -170,10 +169,5 @@ omp_set_num_threads(ncores_0);
 
 return R_NilValue;
 
-  } catch( std::exception& __ex__){
-    forward_exception_to_r(__ex__);
-  } catch(...){
-    Rcpp::stop( "c++ exception (unknown reason)" );
-  }
-  return wrap(NA_REAL);
+  END_RCPP
 }

@@ -36,9 +36,9 @@ USA. */
                           SEXP ncores_,
                           SEXP isChol_) 
 { 
+  BEGIN_RCPP
   using namespace Rcpp;
   
-  try{
     arma::mat X = as<arma::mat>(X_);
     arma::vec mu = as<arma::vec>(mu_);  
     arma::mat sigma = as<arma::mat>(sigma_); 
@@ -78,13 +78,8 @@ USA. */
     
     return Rout;
     
-  } catch( std::exception& __ex__){
-    forward_exception_to_r(__ex__);
-  } catch(...){
-    Rcpp::stop( "c++ exception (unknown reason)" );
-  }
-  return wrap(NA_REAL);
-  }
+  END_RCPP
+}
 
 
 /* 
